@@ -11,6 +11,18 @@
 
 @implementation Game
 
+- (Game NSManagedObject *)initWithEntity:(NSEntityDescription *)entity insertIntoManagedObjectContext:(NSManagedObjectContext *)context {
+    self = [super init];
+    if (self) {
+        self.isCompleted = NO;
+        self.turnCounter = 1;
+        //  self.id += ?????;
+        //  self.players =
+    }
+    return self;
+    
+}
+
 -(void)awakeFromInsert {
     self.isCompleted = NO;
     self.turnCounter = 1;

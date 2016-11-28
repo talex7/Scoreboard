@@ -14,6 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface Game : NSManagedObject
 
+
+
 -(void)awakeFromInsert;
 -(void)awakeFromFetch;
 
