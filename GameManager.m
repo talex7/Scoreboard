@@ -10,4 +10,10 @@
 
 @implementation GameManager
 
+-(void)startGame{
+    self.currentGame = [Game new];
+}
+
+
+
 @end
