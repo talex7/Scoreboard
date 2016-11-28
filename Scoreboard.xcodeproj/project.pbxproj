@@ -75,8 +75,8 @@
 			children = (
 				747B90B31DEBAF05001D5A9D /* AppDelegate.h */,
 				747B90B41DEBAF05001D5A9D /* AppDelegate.m */,
-				747B90B61DEBAF05001D5A9D /* ViewController.h */,
 				9503499A1DECB81100C54098 /* UIViewController_ViewExtensions.h */,
+				747B90B61DEBAF05001D5A9D /* ViewController.h */,
 				747B90B71DEBAF05001D5A9D /* ViewController.m */,
 				950349911DECB34F00C54098 /* PageViewController.h */,
 				950349921DECB34F00C54098 /* PageViewController.m */,
