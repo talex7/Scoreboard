@@ -7,6 +7,9 @@
 //
 
 #import "PageViewController.h"
+#import "PlayerViewController.h"
+#import "GameSummaryViewController.h"
+
 
 @interface PageViewController ()
 
@@ -48,33 +51,32 @@
 }
 - (UIViewController *)viewControllerAtIndex:(NSUInteger)index
 {
-    if (([self.players count] == 0) || (index == [self.players count]+2)) {
+    if ((index == 0)||(index == 3)){
         return nil;
     }
     
-    if (index  <= [self.players count]) {
-        PlayerViewController *playerContent = [self.storyboard instantiateViewControllerWithIdentifier:@"BoardController"];
-        
-        pageContentViewController.pageIndex = index;
-        pageContentViewController.players = self.players;
-        return pageContentViewController;
+    if (index  <= 1) {
+        PlayerViewController *playerControl = [self.storyboard instantiateViewControllerWithIdentifier:@"BoardController"];
+        playerControl.pageIndex = index;
+        playerControl.players = self.players;
+        return playerControl;
+    }else{
+        GameSummaryViewController *gameSummary = [self.storyboard instantiateViewControllerWithIdentifier:@"GameSummary"];
+        gameSummary.pageIndex = index;
+        gameSummary.players = self.players;
+        return gameSummary;
     }
-    
-    
 }
+
 - (NSInteger)presentationCountForPageViewController:(UIPageViewController *)pageViewController
 {
-    return [self.players count];
+    return 2;
 }
 - (NSInteger)presentationIndexForPageViewController:(UIPageViewController *)pageViewController
 {
     return 0;
 }
--(NSString*)findPlayerName:(NSUInteger)index
-{
-    Player *p = [self.players objectAtIndex:index];
-    return p.name;
-}
+
 
 
 @end
