@@ -14,8 +14,8 @@
 -(void)awakeFromInsert {
     self.totalPts = 0;
     self.gamesWon = 0;
-    self.id += ;
-    self.name 
+//    self.id += ;
+//    self.name =
 }
 
 

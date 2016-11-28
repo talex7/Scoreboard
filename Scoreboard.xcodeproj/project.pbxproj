@@ -88,14 +88,6 @@
 		747B90AF1DEBAF05001D5A9D /* Scoreboard */ = {
 			isa = PBXGroup;
 			children = (
-				747B90D91DECBF2D001D5A9D /* Game+CoreDataClass.h */,
-				747B90DA1DECBF2D001D5A9D /* Game+CoreDataClass.m */,
-				747B90DB1DECBF2D001D5A9D /* Game+CoreDataProperties.h */,
-				747B90DC1DECBF2D001D5A9D /* Game+CoreDataProperties.m */,
-				747B90DD1DECBF2D001D5A9D /* Player+CoreDataClass.h */,
-				747B90DE1DECBF2D001D5A9D /* Player+CoreDataClass.m */,
-				747B90DF1DECBF2D001D5A9D /* Player+CoreDataProperties.h */,
-				747B90E01DECBF2D001D5A9D /* Player+CoreDataProperties.m */,
 				747B90B31DEBAF05001D5A9D /* AppDelegate.h */,
 				747B90B41DEBAF05001D5A9D /* AppDelegate.m */,
 				9503499A1DECB81100C54098 /* UIViewController_ViewExtensions.h */,
@@ -122,6 +114,14 @@
 		747B90B01DEBAF05001D5A9D /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				747B90D91DECBF2D001D5A9D /* Game+CoreDataClass.h */,
+				747B90DA1DECBF2D001D5A9D /* Game+CoreDataClass.m */,
+				747B90DB1DECBF2D001D5A9D /* Game+CoreDataProperties.h */,
+				747B90DC1DECBF2D001D5A9D /* Game+CoreDataProperties.m */,
+				747B90DD1DECBF2D001D5A9D /* Player+CoreDataClass.h */,
+				747B90DE1DECBF2D001D5A9D /* Player+CoreDataClass.m */,
+				747B90DF1DECBF2D001D5A9D /* Player+CoreDataProperties.h */,
+				747B90E01DECBF2D001D5A9D /* Player+CoreDataProperties.m */,
 				747B90CA1DEC9D00001D5A9D /* GameManager.h */,
 				747B90CB1DEC9D00001D5A9D /* GameManager.m */,
 				747B90B11DEBAF05001D5A9D /* main.m */,
