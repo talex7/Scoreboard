@@ -14,6 +14,7 @@
 		747B90BE1DEBAF05001D5A9D /* Scoreboard.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 747B90BC1DEBAF05001D5A9D /* Scoreboard.xcdatamodeld */; };
 		747B90C01DEBAF05001D5A9D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 747B90BF1DEBAF05001D5A9D /* Assets.xcassets */; };
 		747B90C31DEBAF05001D5A9D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 747B90C11DEBAF05001D5A9D /* LaunchScreen.storyboard */; };
+		747B90CC1DEC9D00001D5A9D /* GameManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 747B90CB1DEC9D00001D5A9D /* GameManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,8 @@
 		747B90BF1DEBAF05001D5A9D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		747B90C21DEBAF05001D5A9D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		747B90C41DEBAF05001D5A9D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		747B90CA1DEC9D00001D5A9D /* GameManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameManager.h; path = ../GameManager.h; sourceTree = "<group>"; };
+		747B90CB1DEC9D00001D5A9D /* GameManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GameManager.m; path = ../GameManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,6 +80,8 @@
 		747B90B01DEBAF05001D5A9D /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				747B90CA1DEC9D00001D5A9D /* GameManager.h */,
+				747B90CB1DEC9D00001D5A9D /* GameManager.m */,
 				747B90B11DEBAF05001D5A9D /* main.m */,
 			);
 			name = "Supporting Files";
@@ -154,6 +159,7 @@
 			files = (
 				747B90B81DEBAF05001D5A9D /* ViewController.m in Sources */,
 				747B90B51DEBAF05001D5A9D /* AppDelegate.m in Sources */,
+				747B90CC1DEC9D00001D5A9D /* GameManager.m in Sources */,
 				747B90B21DEBAF05001D5A9D /* main.m in Sources */,
 				747B90BE1DEBAF05001D5A9D /* Scoreboard.xcdatamodeld in Sources */,
 			);
@@ -312,6 +318,7 @@
 				747B90C91DEBAF05001D5A9D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
