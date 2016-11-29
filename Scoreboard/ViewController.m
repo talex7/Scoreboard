@@ -50,37 +50,36 @@
 {
     PageViewController *pVC = (PageViewController*)[segue destinationViewController];
     
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Player"];
-    NSInteger idNo = 01;
-    [request setPredicate:[NSPredicate predicateWithFormat:@"id == %@", idNo]];
-    
-    NSError *error = nil;
-    NSArray *results = [self.moc executeFetchRequest:request error:&error];
-    if (!results) {
-        Player *player = [NSEntityDescription insertNewObjectForEntityForName:@"Player" inManagedObjectContext:self.moc];
-        results = [results arrayByAddingObject:player];
-//        NSLog(@"Error fetching Employee objects: %@\n%@", [error localizedDescription], [error userInfo]);
-//        abort();
-    }
-    
-    if (self.noOfPlayers == 2) {
-        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Player"];
-        NSInteger idNo = 02;
-        [request setPredicate:[NSPredicate predicateWithFormat:@"id == %@", idNo]];
-        
-        NSError *error = nil;
-        NSArray *results2 = [self.moc executeFetchRequest:request error:&error];
-        if (!results2) {
-            Player *player = [NSEntityDescription insertNewObjectForEntityForName:@"Player" inManagedObjectContext:self.moc];
-            results = [results arrayByAddingObject:player];
-            //        NSLog(@"Error fetching Employee objects: %@\n%@", [error localizedDescription], [error userInfo]);
-            //        abort();
-        } else {
-            results = [results arrayByAddingObjectsFromArray:results2];
-        }
-    }
-    [pVC.players addObjectsFromArray:results];
-     
+//    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Player"];
+//    NSInteger idNo = 01;
+//    [request setPredicate:[NSPredicate predicateWithFormat:@"id == %@", idNo]];
+//    
+//    NSError *error = nil;
+//    NSArray *results = [self.moc executeFetchRequest:request error:&error];
+//    if (!results) {
+//        Player *player = [NSEntityDescription insertNewObjectForEntityForName:@"Player" inManagedObjectContext:self.moc];
+//        results = [results arrayByAddingObject:player];
+////        NSLog(@"Error fetching Employee objects: %@\n%@", [error localizedDescription], [error userInfo]);
+////        abort();
+//    }
+//    
+//    if (self.noOfPlayers == 2) {
+//        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Player"];
+//        NSInteger idNo = 02;
+//        [request setPredicate:[NSPredicate predicateWithFormat:@"id == %@", idNo]];
+//        
+//        NSError *error = nil;
+//        NSArray *results2 = [self.moc executeFetchRequest:request error:&error];
+//        if (!results2) {
+//            Player *player = [NSEntityDescription insertNewObjectForEntityForName:@"Player" inManagedObjectContext:self.moc];
+//            results = [results arrayByAddingObject:player];
+//            //        NSLog(@"Error fetching Employee objects: %@\n%@", [error localizedDescription], [error userInfo]);
+//            //        abort();
+//        } else {
+//            results = [results arrayByAddingObjectsFromArray:results2];
+//        }
+//    }
+//    [pVC.players addObjectsFromArray:results];
     pVC.pageIndex = 0;
 }
 

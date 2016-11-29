@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		740B15DE1DEDF54A0073C2D8 /* Player+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 740B15DB1DEDF54A0073C2D8 /* Player+CoreDataProperties.m */; };
-		740B15DF1DEDF54A0073C2D8 /* Game+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 740B15DD1DEDF54A0073C2D8 /* Game+CoreDataProperties.m */; };
 		747B90B21DEBAF05001D5A9D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 747B90B11DEBAF05001D5A9D /* main.m */; };
 		747B90B51DEBAF05001D5A9D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 747B90B41DEBAF05001D5A9D /* AppDelegate.m */; };
 		747B90B81DEBAF05001D5A9D /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 747B90B71DEBAF05001D5A9D /* ViewController.m */; };
@@ -198,9 +196,7 @@
 				950349961DECB4A800C54098 /* PlayerViewController.m in Sources */,
 				747B90B81DEBAF05001D5A9D /* ViewController.m in Sources */,
 				747B90B51DEBAF05001D5A9D /* AppDelegate.m in Sources */,
-				740B15DF1DEDF54A0073C2D8 /* Game+CoreDataProperties.m in Sources */,
 				747B90CC1DEC9D00001D5A9D /* GameManager.m in Sources */,
-				740B15DE1DEDF54A0073C2D8 /* Player+CoreDataProperties.m in Sources */,
 				747B90B21DEBAF05001D5A9D /* main.m in Sources */,
 				9503499D1DECD38300C54098 /* BoardDetailViewController.m in Sources */,
 				950349991DECB4B300C54098 /* GameSummaryViewController.m in Sources */,
