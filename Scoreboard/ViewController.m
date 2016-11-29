@@ -50,28 +50,38 @@
 {
     PageViewController *pVC = (PageViewController*)[segue destinationViewController];
     
-//    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Player"];
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Player"];
 //    NSInteger idNo = 01;
-//    [request setPredicate:[NSPredicate predicateWithFormat:@"id == %@", idNo]];
-//    
-//    NSError *error = nil;
-//    NSArray *results = [self.moc executeFetchRequest:request error:&error];
-//    if (!results) {
-//        Player *player = [NSEntityDescription insertNewObjectForEntityForName:@"Player" inManagedObjectContext:self.moc];
-//        results = [results arrayByAddingObject:player];
-////        NSLog(@"Error fetching Employee objects: %@\n%@", [error localizedDescription], [error userInfo]);
-////        abort();
-//    }
-//    
-//    if (self.noOfPlayers == 2) {
+//    [request setPredicate:[NSPredicate predicateWithFormat:@"idNo == %d", idNo]];
+    
+    NSError *error = nil;
+    NSArray *fetchResults = [self.moc executeFetchRequest:request error:&error];
+    NSMutableArray <Player *>*playerArray = [NSMutableArray new];
+    
+    
+    if (fetchResults.count < 1) {
+        Player *player = [NSEntityDescription insertNewObjectForEntityForName:@"Player" inManagedObjectContext:self.moc];
+        [playerArray addObject:player];
+    } else {
+        [playerArray addObject:fetchResults[0]];
+    }
+    
+    if (self.noOfPlayers == 2 && fetchResults.count < 2) {
+        // create it
+        Player *player = [NSEntityDescription insertNewObjectForEntityForName:@"Player" inManagedObjectContext:self.moc];
+        [playerArray addObject:player];
+        
+    } else {
+        [playerArray addObject:fetchResults[1]];
+    }
 //        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Player"];
 //        NSInteger idNo = 02;
-//        [request setPredicate:[NSPredicate predicateWithFormat:@"id == %@", idNo]];
+//        [request setPredicate:[NSPredicate predicateWithFormat:@"idNo == %d", idNo]];
 //        
 //        NSError *error = nil;
 //        NSArray *results2 = [self.moc executeFetchRequest:request error:&error];
 //        if (!results2) {
-//            Player *player = [NSEntityDescription insertNewObjectForEntityForName:@"Player" inManagedObjectContext:self.moc];
+//            
 //            results = [results arrayByAddingObject:player];
 //            //        NSLog(@"Error fetching Employee objects: %@\n%@", [error localizedDescription], [error userInfo]);
 //            //        abort();
@@ -79,7 +89,13 @@
 //            results = [results arrayByAddingObjectsFromArray:results2];
 //        }
 //    }
-//    [pVC.players addObjectsFromArray:results];
+
+
+    pVC.players = playerArray;
+    
+    if ([[self moc] save:&error] == NO) {
+        NSAssert(NO, @"Error saving context: %@\n%@", [error localizedDescription], [error userInfo]);
+    }
     pVC.pageIndex = 0;
 }
 

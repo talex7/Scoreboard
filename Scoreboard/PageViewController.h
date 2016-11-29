@@ -18,9 +18,9 @@
 @interface PageViewController : UIPageViewController <UIPageViewControllerDataSource>
 
 @property (nonatomic) NSInteger pageIndex;
-@property (nonatomic) NSMutableArray *players;
-@property PlayerViewController *playerViewController;
-@property GameSummaryViewController *gameSummary;
+@property (nonatomic) NSArray *players;
+@property (nonatomic) PlayerViewController *playerViewController;
+@property (nonatomic) GameSummaryViewController *gameSummary;
 @property (strong, nonatomic) NSMutableArray<UIViewController*> *viewCs;
 
 @end
