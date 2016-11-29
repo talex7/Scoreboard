@@ -15,7 +15,7 @@
     self.totalPts = [NSKeyedArchiver archivedDataWithRootObject:[NSMutableArray new]];
     self.totalShots = [NSKeyedArchiver archivedDataWithRootObject:[NSMutableArray new]];
     self.gamesWon = 0;
-    self.idNo = 01;
+    self.idNo = 0;
     self.name = "";
 }
 
