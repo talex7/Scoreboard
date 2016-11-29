@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 @class GameManager;
 
-@class PlayerViewController, GameSummaryViewController;
+@class PlayerViewController, GameSummaryViewController, Game;
 
 @protocol Pages <NSObject>
 @property (nonatomic) NSInteger pageIndex;
@@ -18,7 +18,7 @@
 
 @interface PageViewController : UIPageViewController <UIPageViewControllerDataSource>
 
-@property (strong) GameManager *gm;
+@property (nonatomic) Game *game;
 @property (nonatomic) NSInteger pageIndex;
 @property (nonatomic) NSArray *players;
 @property (nonatomic) PlayerViewController *playerViewController;

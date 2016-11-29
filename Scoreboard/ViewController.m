@@ -48,8 +48,7 @@
     UINavigationController *nav = (UINavigationController*)[segue destinationViewController];
     
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Player"];
-//    NSInteger idNo = 01;
-//    [request setPredicate:[NSPredicate predicateWithFormat:@"idNo == %d", idNo]];
+
     NSInteger gameType = [self.playerPicker selectedRowInComponent:0];
     PageViewController *pVC = (PageViewController*)nav.topViewController;
     
@@ -58,6 +57,9 @@
     NSMutableArray <Player *>*playerArray = [NSMutableArray new];
     
     if (gameType == 0) {
+        Game *game = [NSEntityDescription insertNewObjectForEntityForName:@"Game" inManagedObjectContext:self.moc];
+        game.timeStarted = [NSDate date];
+        pVC.game = game;
         
         if (fetchResults.count < 1) {
             Player *player = [NSEntityDescription insertNewObjectForEntityForName:@"Player" inManagedObjectContext:self.moc];
@@ -76,9 +78,12 @@
             [playerArray addObject:fetchResults[1]];
         }
         
+        pVC.game.player = (NSOrderedSet<Player*>*)[NSOrderedSet orderedSetWithArray:playerArray];
     }
-
+    
+    
     pVC.players = playerArray;
+    
     
     if ([[self moc] save:&error] == NO) {
         NSAssert(NO, @"Error saving context: %@\n%@", [error localizedDescription], [error userInfo]);

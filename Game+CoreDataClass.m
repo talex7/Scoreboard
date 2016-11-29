@@ -12,4 +12,8 @@
 #import "Points+CoreDataClass.h"
 @implementation Game
 
+-(void)awakeFromInsert{
+    self.timeEnded = [NSDate date];
+}
+
 @end
