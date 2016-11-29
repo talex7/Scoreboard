@@ -61,6 +61,7 @@
     
     if (fetchResults.count < 1) {
         Player *player = [NSEntityDescription insertNewObjectForEntityForName:@"Player" inManagedObjectContext:self.moc];
+        player.name = @"Player";
         [playerArray addObject:player];
     } else {
         [playerArray addObject:fetchResults[0]];
@@ -69,26 +70,13 @@
     if (self.noOfPlayers == 2 && fetchResults.count < 2) {
         // create it
         Player *player = [NSEntityDescription insertNewObjectForEntityForName:@"Player" inManagedObjectContext:self.moc];
+        player.name = @"Opponent";
         [playerArray addObject:player];
         
     } else if (self.noOfPlayers == 2) {
         [playerArray addObject:fetchResults[1]];
     }
-//        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Player"];
-//        NSInteger idNo = 02;
-//        [request setPredicate:[NSPredicate predicateWithFormat:@"idNo == %d", idNo]];
-//        
-//        NSError *error = nil;
-//        NSArray *results2 = [self.moc executeFetchRequest:request error:&error];
-//        if (!results2) {
-//            
-//            results = [results arrayByAddingObject:player];
-//            //        NSLog(@"Error fetching Employee objects: %@\n%@", [error localizedDescription], [error userInfo]);
-//            //        abort();
-//        } else {
-//            results = [results arrayByAddingObjectsFromArray:results2];
-//        }
-//    }
+
 
 
     pVC.players = playerArray;
