@@ -5,15 +5,16 @@
 //  Created by Matthew Mauro on 2016-11-28.
 //
 //
-
+#import "Player+CoreDataClass.h"
 #import "AppDelegate.h"
 #import <UIKit/UIKit.h>
+
 @class GameManager;
 
 @interface PlayerViewController : UIViewController
 
 @property (strong) GameManager *gm;
-@property (nonatomic) NSMutableArray *players;
+@property (nonatomic) NSMutableArray<Player*> *players;
 @property (nonatomic) NSInteger pageIndex;
 @property (nonatomic) NSInteger shotCount;
 
