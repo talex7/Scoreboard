@@ -24,7 +24,7 @@
     self.finshButton.hidden = YES;
     self.finshButton.userInteractionEnabled = NO;
     
-    NSFetchRequest *gameFetch
+//    NSFetchRequest *gameFetch
     
 }
 

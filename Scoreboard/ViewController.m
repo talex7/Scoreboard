@@ -27,9 +27,6 @@
     self.playerPicker.dataSource = self;
     self.playerPicker.delegate = self;
     
-    GameManager *gm = [GameManager new];
-    
-    
     AppDelegate *appDelegate = (AppDelegate*)([[UIApplication sharedApplication] delegate]);
     
     self.moc = appDelegate.persistentContainer.viewContext;
@@ -76,9 +73,8 @@
     } else if (self.noOfPlayers == 2) {
         [playerArray addObject:fetchResults[1]];
     }
-
-
-
+    
+    pVC.gm = [GameManager new];
     pVC.players = playerArray;
     
     if ([[self moc] save:&error] == NO) {

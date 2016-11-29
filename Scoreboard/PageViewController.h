@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+@class GameManager;
 
 @class PlayerViewController, GameSummaryViewController;
 
@@ -17,6 +18,7 @@
 
 @interface PageViewController : UIPageViewController <UIPageViewControllerDataSource>
 
+@property (strong) GameManager *gm;
 @property (nonatomic) NSInteger pageIndex;
 @property (nonatomic) NSArray *players;
 @property (nonatomic) PlayerViewController *playerViewController;
