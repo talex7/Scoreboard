@@ -5,13 +5,10 @@
 //  Created by Matthew Mauro on 2016-11-28.
 //
 //
+
 #import <QuartzCore/QuartzCore.h>
 #import "BoardDetailViewController.h"
 
-typedef enum : NSUInteger {
-    clockWiseTurn,
-    counterClockWiseTurn
-} Spin;
 
 @interface BoardDetailViewController ()
 @property (strong) NSArray *centreSpaces;
@@ -38,6 +35,8 @@ typedef enum : NSUInteger {
     // Dispose of any resources that can be recreated.
 }
 
+#pragma mark - Rotate DartBoard methods
+
 -(void)setSliceLabels:(NSString *)centreIndex
 {
     NSInteger centre = [self.centreSpaces indexOfObject:centreIndex];
@@ -62,55 +61,28 @@ typedef enum : NSUInteger {
     self.leftSliceLabel.text = [self.centreSpaces objectAtIndex:left];
     self.rightSliceLabel.text = [self.centreSpaces objectAtIndex:right];
 }
--(void)spinBoard:(Spin)spin
-{
-    switch (spin) {
-        case clockWiseTurn:
-            [self runSpinAnimationOnView:self.boardView duration:1 rotations:-0.314 repeat:0];
-            break;
-        case counterClockWiseTurn:
-            
-            break;
-            
-        default:
-            break;
-    }
-}
 - (IBAction)clockwiseTurn:(id)sender {
     self.currentCentre++;
     if (self.currentCentre == 20) {
         self.currentCentre = 0;
     }
-    [self spinBoard:clockWiseTurn];
-    [self.boardView setTransform:CGAffineTransformMakeRotation(self.boardRotation-=0.314)];
-    [self setSliceLabels: self.centreSpaces[self.currentCentre]];
+    self.boardRotation -= 0.314;
+    [UIView animateWithDuration:1 animations:^{
+        self.boardView.transform = CGAffineTransformMakeRotation(self.boardRotation);
+    }];
+    [self performSelector:@selector(setSliceLabels:) withObject:self.centreSpaces[self.currentCentre] afterDelay:0.5];
+    
 }
 - (IBAction)counterclockwiseTurn:(id)sender {
     self.currentCentre--;
     if (self.currentCentre == -1) {
         self.currentCentre = 19;
     }
-    [self setSliceLabels: self.centreSpaces[self.currentCentre]];
-}
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
-- (void) runSpinAnimationOnView:(UIView*)view duration:(CGFloat)duration rotations:(CGFloat)rotations repeat:(float)repeat;
-{
-    CABasicAnimation* rotationAnimation;
-    rotationAnimation = [CABasicAnimation animationWithKeyPath:@"transform.rotation.z"];
-    rotationAnimation.toValue = [NSNumber numberWithFloat: rotations*duration];
-    rotationAnimation.duration = duration;
-    rotationAnimation.cumulative = YES;
-    rotationAnimation.repeatCount = repeat;
-    [view.layer addAnimation:rotationAnimation forKey:@"rotationAnimation"];
+    self.boardRotation += 0.314;
+    [UIView animateWithDuration:1 animations:^{
+        self.boardView.transform = CGAffineTransformMakeRotation(self.boardRotation);
+    }];
+    [self performSelector:@selector(setSliceLabels:) withObject:self.centreSpaces[self.currentCentre] afterDelay:0.5];
 }
 
 @end
