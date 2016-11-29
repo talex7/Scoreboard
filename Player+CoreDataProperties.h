@@ -2,7 +2,7 @@
 //  Player+CoreDataProperties.h
 //  Scoreboard
 //
-//  Created by Thomas Alexanian on 2016-11-28.
+//  Created by Thomas Alexanian on 2016-11-29.
 //
 //  This file was automatically generated and should not be edited.
 //
@@ -16,11 +16,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (NSFetchRequest<Player *> *)fetchRequest;
 
-@property (nullable, nonatomic, retain) NSData *totalPts;
 @property (nonatomic) int32_t gamesWon;
-@property (nullable, nonatomic, retain) NSData *totalShots;
+@property (nonatomic) int32_t idNo;
 @property (nullable, nonatomic, copy) NSString *name;
-@property (nonatomic) int32_t id;
+@property (nullable, nonatomic, retain) NSData *totalPts;
+@property (nullable, nonatomic, retain) NSData *totalShots;
 
 @end
 

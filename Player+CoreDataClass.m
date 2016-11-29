@@ -12,10 +12,11 @@
 @implementation Player
 
 -(void)awakeFromInsert {
-    self.totalPts = 0;
+    self.totalPts = [NSKeyedArchiver archivedDataWithRootObject:[NSMutableArray new]];
+    self.totalShots = [NSKeyedArchiver archivedDataWithRootObject:[NSMutableArray new]];
     self.gamesWon = 0;
-//    self.id += ;
-//    self.name =
+    self.idNo = 01;
+    self.name = "";
 }
 
 

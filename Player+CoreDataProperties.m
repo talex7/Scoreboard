@@ -2,7 +2,7 @@
 //  Player+CoreDataProperties.m
 //  Scoreboard
 //
-//  Created by Thomas Alexanian on 2016-11-28.
+//  Created by Thomas Alexanian on 2016-11-29.
 //
 //  This file was automatically generated and should not be edited.
 //
@@ -15,10 +15,10 @@
 	return [[NSFetchRequest alloc] initWithEntityName:@"Player"];
 }
 
-@dynamic totalPts;
 @dynamic gamesWon;
-@dynamic totalShots;
+@dynamic idNo;
 @dynamic name;
-@dynamic id;
+@dynamic totalPts;
+@dynamic totalShots;
 
 @end
