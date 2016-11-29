@@ -35,9 +35,6 @@
                         dict1, dict2, nil];
     self.playerScore = 0;
     self.opponentScore = 0;
-    
 }
-
-
 
 @end

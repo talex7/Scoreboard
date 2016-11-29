@@ -27,9 +27,6 @@
     self.playerPicker.dataSource = self;
     self.playerPicker.delegate = self;
     
-    GameManager *gm = [GameManager new];
-    
-    
     AppDelegate *appDelegate = (AppDelegate*)([[UIApplication sharedApplication] delegate]);
     
     self.moc = appDelegate.persistentContainer.viewContext;
