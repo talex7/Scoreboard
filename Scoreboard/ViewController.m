@@ -53,31 +53,33 @@
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Player"];
 //    NSInteger idNo = 01;
 //    [request setPredicate:[NSPredicate predicateWithFormat:@"idNo == %d", idNo]];
+    NSInteger gameType = [self.playerPicker selectedRowInComponent:0];
+
     
     NSError *error = nil;
     NSArray *fetchResults = [self.moc executeFetchRequest:request error:&error];
     NSMutableArray <Player *>*playerArray = [NSMutableArray new];
     
-    
-    if (fetchResults.count < 1) {
-        Player *player = [NSEntityDescription insertNewObjectForEntityForName:@"Player" inManagedObjectContext:self.moc];
-        player.name = @"Player";
-        [playerArray addObject:player];
-    } else {
-        [playerArray addObject:fetchResults[0]];
-    }
-    
-    if (self.noOfPlayers == 2 && fetchResults.count < 2) {
-        // create it
-        Player *player = [NSEntityDescription insertNewObjectForEntityForName:@"Player" inManagedObjectContext:self.moc];
-        player.name = @"Opponent";
-        [playerArray addObject:player];
+    if (gameType == 0) {
         
-    } else if (self.noOfPlayers == 2) {
-        [playerArray addObject:fetchResults[1]];
+        if (fetchResults.count < 1) {
+            Player *player = [NSEntityDescription insertNewObjectForEntityForName:@"Player" inManagedObjectContext:self.moc];
+            player.name = @"Player";
+            [playerArray addObject:player];
+        } else {
+            [playerArray addObject:fetchResults[0]];
+        }
+        
+        if (fetchResults.count < 2) {
+            Player *player = [NSEntityDescription insertNewObjectForEntityForName:@"Player" inManagedObjectContext:self.moc];
+            player.name = @"Opponent";
+            [playerArray addObject:player];
+            
+        } else {
+            [playerArray addObject:fetchResults[1]];
+        }
+        
     }
-
-
 
     pVC.players = playerArray;
     
@@ -101,18 +103,18 @@
     NSString *rowLabel;
     switch (row) {
         case 0:
-            rowLabel = @"Single Player";
-            self.noOfPlayers = 1;
+            rowLabel = @"New Game";
+            
             return rowLabel;
         case 1:
-            rowLabel = @"2 Players";
-            self.noOfPlayers = 2;
+            rowLabel = @"Continue";
             return rowLabel;
     }
     return rowLabel;
 }
 -(NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
 {
+    
     return 2;
 }
 

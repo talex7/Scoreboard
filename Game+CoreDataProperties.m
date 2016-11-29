@@ -16,8 +16,10 @@
 }
 
 @dynamic idNo;
-@dynamic isCompleted;
-@dynamic players;
 @dynamic turnCounter;
+@dynamic timeStarted;
+@dynamic timeEnded;
+@dynamic player;
+@dynamic points;
 
 @end

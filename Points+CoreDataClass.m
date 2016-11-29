@@ -1,5 +1,5 @@
 //
-//  Player+CoreDataClass.m
+//  Points+CoreDataClass.m
 //  Scoreboard
 //
 //  Created by Thomas Alexanian on 2016-11-29.
@@ -7,9 +7,9 @@
 //  This file was automatically generated and should not be edited.
 //
 
-#import "Player+CoreDataClass.h"
-#import "Game+CoreDataClass.h"
 #import "Points+CoreDataClass.h"
-@implementation Player
+#import "Game+CoreDataClass.h"
+#import "Player+CoreDataClass.h"
+@implementation Points
 
 @end

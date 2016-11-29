@@ -20,5 +20,7 @@
 @dynamic name;
 @dynamic totalPts;
 @dynamic totalShots;
+@dynamic game;
+@dynamic points;
 
 @end
