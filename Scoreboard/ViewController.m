@@ -71,7 +71,7 @@
         Player *player = [NSEntityDescription insertNewObjectForEntityForName:@"Player" inManagedObjectContext:self.moc];
         [playerArray addObject:player];
         
-    } else {
+    } else if (self.noOfPlayers == 2) {
         [playerArray addObject:fetchResults[1]];
     }
 //        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Player"];
