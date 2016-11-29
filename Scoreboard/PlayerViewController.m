@@ -5,6 +5,8 @@
 //  Created by Matthew Mauro on 2016-11-28.
 //
 //
+
+
 #import "PageViewController.h"
 #import "PlayerViewController.h"
 
@@ -21,6 +23,9 @@
     
     self.finshButton.hidden = YES;
     self.finshButton.userInteractionEnabled = NO;
+    
+    NSFetchRequest *gameFetch
+    
 }
 
 - (void)didReceiveMemoryWarning {
