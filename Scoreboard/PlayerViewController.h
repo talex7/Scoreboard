@@ -10,7 +10,8 @@
 
 @interface PlayerViewController : UIViewController
 
-@property (nonatomic) NSInteger pageIndex;
 @property (nonatomic) NSMutableArray *players;
+@property (nonatomic) NSInteger pageIndex;
+@property (nonatomic) NSInteger shotCount;
 
 @end
