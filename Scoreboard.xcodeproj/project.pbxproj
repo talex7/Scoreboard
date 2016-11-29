@@ -49,7 +49,6 @@
 		950349951DECB4A800C54098 /* PlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayerViewController.m; sourceTree = "<group>"; };
 		950349971DECB4B300C54098 /* GameSummaryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameSummaryViewController.h; sourceTree = "<group>"; };
 		950349981DECB4B300C54098 /* GameSummaryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameSummaryViewController.m; sourceTree = "<group>"; };
-		9503499A1DECB81100C54098 /* UIViewController_ViewExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIViewController_ViewExtensions.h; sourceTree = "<group>"; };
 		9503499B1DECD38200C54098 /* BoardDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BoardDetailViewController.h; sourceTree = "<group>"; };
 		9503499C1DECD38300C54098 /* BoardDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BoardDetailViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -86,7 +85,6 @@
 			children = (
 				747B90B31DEBAF05001D5A9D /* AppDelegate.h */,
 				747B90B41DEBAF05001D5A9D /* AppDelegate.m */,
-				9503499A1DECB81100C54098 /* UIViewController_ViewExtensions.h */,
 				747B90B61DEBAF05001D5A9D /* ViewController.h */,
 				747B90B71DEBAF05001D5A9D /* ViewController.m */,
 				950349911DECB34F00C54098 /* PageViewController.h */,

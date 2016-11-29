@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11542" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11542" systemVersion="15G1108" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -271,7 +271,7 @@
         <!--BoardController-->
         <scene sceneID="6c3-U4-2gj">
             <objects>
-                <viewController storyboardIdentifier="BoardController" title="BoardController" id="hLi-qF-k2S" customClass="PlayerViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="BoardController" title="BoardController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="hLi-qF-k2S" customClass="PlayerViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="jyn-WH-8Fi"/>
                         <viewControllerLayoutGuide type="bottom" id="DHW-iE-WC7"/>
@@ -371,7 +371,7 @@
         <!--GameSummary-->
         <scene sceneID="Oso-SS-ocV">
             <objects>
-                <viewController storyboardIdentifier="GameSummary" title="GameSummary" id="uEx-xP-sC6" customClass="GameSummaryViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="GameSummary" title="GameSummary" useStoryboardIdentifierAsRestorationIdentifier="YES" id="uEx-xP-sC6" customClass="GameSummaryViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="5gI-GS-mrP"/>
                         <viewControllerLayoutGuide type="bottom" id="ovK-kg-c5f"/>
@@ -389,7 +389,7 @@
         <!--Page View Controller-->
         <scene sceneID="wq0-2H-SD3">
             <objects>
-                <pageViewController autoresizesArchivedViewToFullSize="NO" transitionStyle="pageCurl" navigationOrientation="horizontal" spineLocation="min" id="pTV-Pa-R8f" sceneMemberID="viewController"/>
+                <pageViewController autoresizesArchivedViewToFullSize="NO" transitionStyle="pageCurl" navigationOrientation="horizontal" spineLocation="min" id="pTV-Pa-R8f" customClass="PageViewController" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9RF-Ax-bDb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1338" y="-119"/>

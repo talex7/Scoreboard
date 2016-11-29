@@ -5,10 +5,10 @@
 //  Created by Matthew Mauro on 2016-11-28.
 //
 //
-
+#import "PageViewController.h"
 #import "PlayerViewController.h"
 
-@interface PlayerViewController ()
+@interface PlayerViewController () <Pages>
 
 @end
 

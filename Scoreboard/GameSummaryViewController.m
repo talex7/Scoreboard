@@ -5,10 +5,10 @@
 //  Created by Matthew Mauro on 2016-11-28.
 //
 //
-
+#import "PageViewController.h"
 #import "GameSummaryViewController.h"
 
-@interface GameSummaryViewController ()
+@interface GameSummaryViewController () <Pages>
 
 @end
 
@@ -23,6 +23,7 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
 
 /*
 #pragma mark - Navigation
