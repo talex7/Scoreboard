@@ -26,7 +26,6 @@
     self.currentCentre = 0;
     self.boardRotation = 0;
     self.centreSpaces = @[@"20", @"1", @"18", @"4", @"13", @"6", @"10", @"15", @"2", @"17", @"3", @"19", @"7", @"16", @"8", @"11", @"14", @"9", @"12", @"5"];
-    
     self.centreSliceLabel.text = [self.centreSpaces objectAtIndex:self.currentCentre];
 }
 
@@ -67,10 +66,10 @@
         self.currentCentre = 0;
     }
     self.boardRotation -= 0.314;
-    [UIView animateWithDuration:1 animations:^{
+    [UIView animateWithDuration:0.5 animations:^{
         self.boardView.transform = CGAffineTransformMakeRotation(self.boardRotation);
     }];
-    [self performSelector:@selector(setSliceLabels:) withObject:self.centreSpaces[self.currentCentre] afterDelay:0.5];
+    [self performSelector:@selector(setSliceLabels:) withObject:self.centreSpaces[self.currentCentre] afterDelay:0.25];
     
 }
 - (IBAction)counterclockwiseTurn:(id)sender {
@@ -79,10 +78,10 @@
         self.currentCentre = 19;
     }
     self.boardRotation += 0.314;
-    [UIView animateWithDuration:1 animations:^{
+    [UIView animateWithDuration:0.5 animations:^{
         self.boardView.transform = CGAffineTransformMakeRotation(self.boardRotation);
     }];
-    [self performSelector:@selector(setSliceLabels:) withObject:self.centreSpaces[self.currentCentre] afterDelay:0.5];
+    [self performSelector:@selector(setSliceLabels:) withObject:self.centreSpaces[self.currentCentre] afterDelay:0.25];
 }
 
 @end

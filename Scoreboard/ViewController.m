@@ -45,13 +45,13 @@
 #pragma mark - Segues
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    PageViewController *pVC = (PageViewController*)[segue destinationViewController];
+    UINavigationController *nav = (UINavigationController*)[segue destinationViewController];
     
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Player"];
 //    NSInteger idNo = 01;
 //    [request setPredicate:[NSPredicate predicateWithFormat:@"idNo == %d", idNo]];
     NSInteger gameType = [self.playerPicker selectedRowInComponent:0];
-
+    PageViewController *pVC = (PageViewController*)nav.topViewController;
     
     NSError *error = nil;
     NSArray *fetchResults = [self.moc executeFetchRequest:request error:&error];
