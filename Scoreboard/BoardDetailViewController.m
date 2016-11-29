@@ -16,8 +16,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self.leftSliceLabel setTransform:CGAffineTransformMakeRotation(-M_PI_2/2)];
-    [self.rightSliceLabel setTransform:CGAffineTransformMakeRotation(M_PI_2/2)];
+    [self.leftSliceLabel setTransform:CGAffineTransformMakeRotation(-M_PI_2/4.5)];
+    [self.rightSliceLabel setTransform:CGAffineTransformMakeRotation(M_PI_2/4.5)];
 }
 
 - (void)didReceiveMemoryWarning {
