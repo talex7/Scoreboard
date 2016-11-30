@@ -25,40 +25,35 @@
     self.finshButton.hidden = YES;
     self.finshButton.userInteractionEnabled = NO;
     
-    UIAlertController * alert = [UIAlertController
-                                 alertControllerWithTitle:@"Flipping"
-                                 message:@"Flipping Coin for Turn Order"
-                                 preferredStyle:UIAlertControllerStyleAlert];
-    
-    UIAlertAction* yesButton = [UIAlertAction
-                                actionWithTitle:@"Got It!"
-                                style:UIAlertActionStyleDefault
-                                handler:^(UIAlertAction * action) {
-                                    //Handle your yes please button action here
-                                }];
-    [alert addAction:yesButton];
-    [self presentViewController:alert animated:YES completion:nil];
-    switch (self.game.turnCounter) {
-        case 0:
-            self.currentPlayerLabel.text = [self.players objectAtIndex: self.game.turnCounter].name;
-            break;
-        case 1:
-            self.currentPlayerLabel.text = [self.players objectAtIndex: self.game.turnCounter].name;
-            break;
-        default:
-            break;
+    if (self.game.turnCounter == 1) {
+        UIAlertController * alert = [UIAlertController
+                                     alertControllerWithTitle:@"Flipping"
+                                     message:@"Flipping Coin for Turn Order"
+                                     preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction* yesButton = [UIAlertAction
+                                    actionWithTitle:@"Got It!"
+                                    style:UIAlertActionStyleDefault
+                                    handler:^(UIAlertAction * action) {
+                                        //Handle your yes please button action here
+                                    }];
+        [alert addAction:yesButton];
+        [self presentViewController:alert animated:YES completion:nil];
     }
+    [self turnProgression];
 }
+
+
+#pragma mark - Turn Progress/Reset
 
 -(void)turnProgression
 {
-    self. self.game.turnCounter++;
-    if (self.game.turnCounter == 2) {
-        self.game.turnCounter = 0;
-        self.currentPlayerLabel.text = [self.players objectAtIndex: self.game.turnCounter].name;
+    if (self.game.turnCounter % 2 == 0) {
+        self.currentPlayerLabel.text = [self.game.player objectAtIndex: 0].name;
     }else{
-        self.currentPlayerLabel.text = [self.players objectAtIndex: self.game.turnCounter].name;
+        self.currentPlayerLabel.text = [self.game.player objectAtIndex: 1].name;
     }
+    self.game.turnCounter++;
 }
 
 -(void)didReceiveMemoryWarning {
