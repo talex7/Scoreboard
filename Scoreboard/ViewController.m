@@ -68,14 +68,20 @@
     if (gameType == 0)
     {
         Game *game = [NSEntityDescription insertNewObjectForEntityForName:@"Game" inManagedObjectContext:self.moc];
+        Points *playerPoints = [NSEntityDescription insertNewObjectForEntityForName:@"Points" inManagedObjectContext:self.moc];
+        Points *opponentPoints = [NSEntityDescription insertNewObjectForEntityForName:@"Points" inManagedObjectContext:self.moc];
+        game.points = [[NSOrderedSet alloc] initWithObjects:playerPoints, opponentPoints, nil];
         game.timeStarted = [NSDate date];
         pVC.game = game;
-        
+    
+//        NSOrderedSet *pointsSet = [[NSOrderedSet alloc] initWithObjects:playerPoints, opponentPoints, nil];
         
         if (fetchResultsPlayers.count < 1) {
             Player *player = [NSEntityDescription insertNewObjectForEntityForName:@"Player" inManagedObjectContext:self.moc];
             player.name = @"Player";
+            player.points = [[NSOrderedSet alloc] initWithObjects:playerPoints, nil];
             [playerArray addObject:player];
+            
         } else {
             [playerArray addObject:fetchResultsPlayers[0]];
         }
@@ -83,17 +89,23 @@
         if (fetchResultsPlayers.count < 2) {
             Player *player = [NSEntityDescription insertNewObjectForEntityForName:@"Player" inManagedObjectContext:self.moc];
             player.name = @"Opponent";
+            player.points = [[NSOrderedSet alloc] initWithObjects:opponentPoints, nil];
             [playerArray addObject:player];
             
         } else {
             [playerArray addObject:fetchResultsPlayers[1]];
         }
         
-        pVC.game.player = (NSOrderedSet<Player*>*)[NSOrderedSet orderedSetWithArray:playerArray];
+        game.player = (NSOrderedSet<Player*>*)[NSOrderedSet orderedSetWithArray:playerArray];
+        
+        pVC.game = game;
         
         if (fetchResultsGames.count > 0) {
             Game *game = fetchResultsGames.firstObject;
+            NSOrderedSet *points = game.points;
             [self.moc deleteObject:game];
+            [self.moc deleteObject:[points objectAtIndex:0]];
+            [self.moc deleteObject:[points objectAtIndex:1]];
         }
     }
     
@@ -106,12 +118,7 @@
             playerArray  = (NSMutableArray*)pVC.game.player.array;
         
     }
-    
-    Points *playerPoints = [NSEntityDescription insertNewObjectForEntityForName:@"Points" inManagedObjectContext:self.moc];
-    Points *opponentPoints = [NSEntityDescription insertNewObjectForEntityForName:@"Points" inManagedObjectContext:self.moc];
-    NSOrderedSet *pointsSet = [[NSOrderedSet alloc] initWithObjects:playerPoints, opponentPoints, nil];
-    playerArray[0].points = pointsSet;
-    
+
     
     pVC.players = playerArray;
     
