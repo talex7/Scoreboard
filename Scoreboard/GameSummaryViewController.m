@@ -32,4 +32,26 @@
     
 }
 
+-(void)scoreFinder:(Points*)points
+{
+    NSEntityDescription *entity = [points entity];
+    NSDictionary *attributes = [entity attributesByName];
+    for (NSString *str in attributes) {
+        NSInteger *timesHit = [[points valueForKey:str]integerValue];
+        NSCharacterSet *p = [NSCharacterSet characterSetWithCharactersInString:@"p"];
+        NSString *slice = [str stringByTrimmingCharactersInSet:p];
+        
+    }
+}
+
+-(UIImageView*)setStrikeImage:(NSInteger)sliceTag forScore:(NSInteger)timesHit
+{
+    UIImageView *imageView = [UIImageView new];
+    
+    
+    
+    
+    return imageView;
+}
+
 @end
