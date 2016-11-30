@@ -18,7 +18,6 @@
 		950349931DECB34F00C54098 /* PageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 950349921DECB34F00C54098 /* PageViewController.m */; };
 		950349961DECB4A800C54098 /* PlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 950349951DECB4A800C54098 /* PlayerViewController.m */; };
 		950349991DECB4B300C54098 /* GameSummaryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 950349981DECB4B300C54098 /* GameSummaryViewController.m */; };
-		9503499D1DECD38300C54098 /* BoardDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9503499C1DECD38300C54098 /* BoardDetailViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -206,7 +205,6 @@
 				747B90B51DEBAF05001D5A9D /* AppDelegate.m in Sources */,
 				747B90CC1DEC9D00001D5A9D /* GameManager.m in Sources */,
 				747B90B21DEBAF05001D5A9D /* main.m in Sources */,
-				9503499D1DECD38300C54098 /* BoardDetailViewController.m in Sources */,
 				950349991DECB4B300C54098 /* GameSummaryViewController.m in Sources */,
 				747B90BE1DEBAF05001D5A9D /* Scoreboard.xcdatamodeld in Sources */,
 				950349931DECB34F00C54098 /* PageViewController.m in Sources */,

@@ -65,6 +65,7 @@
 }
 
 #pragma mark - Score Buttons
+
 -(void)enterScore:(UIButton*)sender
 {
     if ([self.multiplierButtons containsObject:sender]) {
@@ -155,7 +156,6 @@
         self.boardView.transform = CGAffineTransformMakeRotation(self.boardRotation);
     }];
     [self performSelector:@selector(setSliceLabels:) withObject:self.centreSpaces[self.currentCentre] afterDelay:0.25];
-    
 }
 - (IBAction)counterclockwiseTurn:(id)sender {
     self.currentCentre--;
