@@ -8,9 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol displayBoard <NSObject>
+@property NSArray *shotValues;
+@end
+
 @interface BoardDetailViewController : UIViewController
 @property (weak, nonatomic) IBOutlet UILabel *leftSliceLabel;
 @property (weak, nonatomic) IBOutlet UILabel *rightSliceLabel;
 @property (weak, nonatomic) IBOutlet UILabel *centreSliceLabel;
+@property id<displayBoard> delegate;
 
 @end
