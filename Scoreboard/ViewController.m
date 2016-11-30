@@ -7,9 +7,11 @@
 //
 
 #import "ViewController.h"
-#import "GameManager.h"
 #import "PageViewController.h"
 #import "AppDelegate.h"
+#import "Player+CoreDataClass.h"
+#import "Game+CoreDataClass.h"
+#import "Points+CoreDataClass.h"
 
 @interface ViewController ()
 
@@ -61,7 +63,7 @@
     
     NSMutableArray <Player *>*playerArray = [NSMutableArray new];
     
-    if (gameType == 0 || fetchResultsGames.count == 0)
+    if (gameType == 0)
     {
         Game *game = [NSEntityDescription insertNewObjectForEntityForName:@"Game" inManagedObjectContext:self.moc];
         game.timeStarted = [NSDate date];
@@ -85,15 +87,45 @@
         }
         
         pVC.game.player = (NSOrderedSet<Player*>*)[NSOrderedSet orderedSetWithArray:playerArray];
+        
+        if (fetchResultsGames.count > 0) {
+            Game *game = fetchResultsGames.firstObject;
+            [self.moc deleteObject:game];
+        }
     }
     
+    
     if (gameType == 1) {
+        
+        if (fetchResultsPlayers.count == 0) {
+            
+            UIAlertController * alert = [UIAlertController
+                                         alertControllerWithTitle:@"No Unfinished Game!"
+                                         message:@"There is no unfinished game to continue"
+                                         preferredStyle:UIAlertControllerStyleAlert];
+            
+            UIAlertAction* yesButton = [UIAlertAction
+                                        actionWithTitle:@"Return"
+                                        style:UIAlertActionStyleDefault
+                                        handler:^(UIAlertAction * action) {
+                                            //Handle your yes please button action here
+                                        }];
+            [alert addAction:yesButton];
+            [self presentViewController:alert animated:YES completion:nil];
+            
+        } else {
         NSArray *fetchResults = [self.moc executeFetchRequest:requestGames error:&error];
         pVC.game = [fetchResults lastObject];
         
         playerArray  = (NSMutableArray*)pVC.game.player.array;
-        
+        }
     }
+    
+    Points *playerPoints = [Points new];
+    Points *opponentPoints = [Points new];
+    NSOrderedSet *pointsSet = [[NSOrderedSet alloc] initWithObjects:playerPoints, opponentPoints, nil];
+    playerArray[0].points = pointsSet;
+    
     
     pVC.players = playerArray;
     
