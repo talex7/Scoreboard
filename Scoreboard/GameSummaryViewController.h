@@ -7,7 +7,7 @@
 //
 #import "Player+CoreDataClass.h"
 #import "Points+CoreDataClass.h"
-#import "Game+CoreDataProperties.h"
+#import "Game+CoreDataClass.h"
 #import <UIKit/UIKit.h>
 
 @interface GameSummaryViewController : UIViewController
