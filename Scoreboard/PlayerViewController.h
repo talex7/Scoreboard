@@ -9,13 +9,14 @@
 #import "AppDelegate.h"
 #import <UIKit/UIKit.h>
 #import "Game+CoreDataClass.h"
+#import "BoardDetailViewController.h"
 
-@class GameManager;
+@interface PlayerViewController : UIViewController <displayBoard>
 
-@interface PlayerViewController : UIViewController
 
 @property (nonatomic) NSArray<Player*> *players;
 @property (nonatomic) Game *game;
+@property NSArray *shotValues;
 @property (nonatomic) NSInteger pageIndex;
 @property (nonatomic) NSInteger shotCount;
 

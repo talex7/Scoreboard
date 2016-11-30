@@ -52,8 +52,11 @@
     // Dispose of any resources that can be recreated.
 }
 
-
-
+#pragma mark - Confirm Scores and unwind Segue
+-(void)unwindForSegue:(UIStoryboardSegue *)unwindSegue towardsViewController:(UIViewController *)subsequentVC
+{
+    
+}
 
 #pragma mark - Score Buttons
 -(void)enterScore:(UIButton*)sender
@@ -73,26 +76,28 @@
     self.shot1Val.text = [self.shotValues objectAtIndex:0];
     self.shot2Val.text = [self.shotValues objectAtIndex:1];
     self.shot3Val.text = [self.shotValues objectAtIndex:2];
+    UIColor *highlightColour = [UIColor colorWithRed:(float)222 green:(float)165 blue:(float)9 alpha:0.5];
+    
     switch (self.shotCount) {
         case 0:
-            self.shot1Val.highlighted = YES;
-            self.shot2Val.highlighted = NO;
-            self.shot3Val.highlighted = NO;
+            self.shot1Val.backgroundColor = highlightColour;
+            self.shot2Val.backgroundColor = nil;
+            self.shot3Val.backgroundColor = nil;
             break;
         case 1:
-            self.shot1Val.highlighted = NO;
-            self.shot2Val.highlighted = YES;
-            self.shot3Val.highlighted = NO;
+            self.shot1Val.backgroundColor = nil;
+            self.shot2Val.backgroundColor = highlightColour;
+            self.shot3Val.backgroundColor = nil;
             break;
         case 2:
-            self.shot1Val.highlighted = NO;
-            self.shot2Val.highlighted = NO;
-            self.shot3Val.highlighted = YES;
+            self.shot1Val.backgroundColor = nil;
+            self.shot2Val.backgroundColor = nil;
+            self.shot3Val.backgroundColor = highlightColour;
             break;
         default:
-            self.shot1Val.highlighted = NO;
-            self.shot2Val.highlighted = NO;
-            self.shot3Val.highlighted = NO;
+            self.shot1Val.backgroundColor = nil;
+            self.shot2Val.backgroundColor = nil;
+            self.shot3Val.backgroundColor = nil;
             break;
     }
     if (self.shotCount == 3) {
