@@ -13,7 +13,6 @@
 @interface PlayerViewController () <Pages>
 @property (weak, nonatomic) IBOutlet UIButton *finshButton;
 @property (weak, nonatomic) IBOutlet UILabel *currentPlayerLabel;
-@property (nonatomic) NSInteger turnOrder;
 @end
 
 @implementation PlayerViewController
@@ -21,7 +20,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.turnOrder = arc4random_uniform(2);
+    self.game.turnCounter = arc4random_uniform(2);
     
     self.finshButton.hidden = YES;
     self.finshButton.userInteractionEnabled = NO;
@@ -39,12 +38,12 @@
                                 }];
     [alert addAction:yesButton];
     [self presentViewController:alert animated:YES completion:nil];
-    switch (self.turnOrder) {
+    switch (self.game.turnCounter) {
         case 0:
-            self.currentPlayerLabel.text = [self.players objectAtIndex:self.turnOrder].name;
+            self.currentPlayerLabel.text = [self.players objectAtIndex: self.game.turnCounter].name;
             break;
         case 1:
-            self.currentPlayerLabel.text = [self.players objectAtIndex:self.turnOrder].name;
+            self.currentPlayerLabel.text = [self.players objectAtIndex: self.game.turnCounter].name;
             break;
         default:
             break;
@@ -53,12 +52,12 @@
 
 -(void)turnProgression
 {
-    self.turnOrder++;
-    if (self.turnOrder == 2) {
-        self.turnOrder = 0;
-        self.currentPlayerLabel.text = [self.players objectAtIndex:self.turnOrder].name;
+    self. self.game.turnCounter++;
+    if (self.game.turnCounter == 2) {
+        self.game.turnCounter = 0;
+        self.currentPlayerLabel.text = [self.players objectAtIndex: self.game.turnCounter].name;
     }else{
-        self.currentPlayerLabel.text = [self.players objectAtIndex:self.turnOrder].name;
+        self.currentPlayerLabel.text = [self.players objectAtIndex: self.game.turnCounter].name;
     }
 }
 

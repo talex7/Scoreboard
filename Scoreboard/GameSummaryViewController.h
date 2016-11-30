@@ -11,6 +11,7 @@
 @interface GameSummaryViewController : UIViewController
 
 @property (nonatomic) NSInteger pageIndex;
-@property (nonatomic) NSMutableArray *players;
+@property (nonatomic) NSArray *players;
+@property (nonatomic) Game *game;
 
 @end
