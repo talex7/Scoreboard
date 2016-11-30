@@ -32,8 +32,10 @@
     AppDelegate *appDelegate = (AppDelegate*)([[UIApplication sharedApplication] delegate]);
     
     self.moc = appDelegate.persistentContainer.viewContext;
-                                   
     
+    NSFetchRequest *requestGames = [NSFetchRequest fetchRequestWithEntityName:@"Game"];
+    NSDate *date;
+    [requestGames setPredicate:[NSPredicate predicateWithFormat:@"timeEnded = %@", date]];
 }
 
 
@@ -51,7 +53,7 @@
     
     NSFetchRequest *requestPlayers = [NSFetchRequest fetchRequestWithEntityName:@"Player"];
     NSFetchRequest *requestGames = [NSFetchRequest fetchRequestWithEntityName:@"Game"];
-    NSDate *date; 
+    NSDate *date;
     [requestGames setPredicate:[NSPredicate predicateWithFormat:@"timeEnded = %@", date]];
     
     NSInteger gameType = [self.playerPicker selectedRowInComponent:0];
@@ -97,32 +99,15 @@
     
     if (gameType == 1) {
         
-        if (fetchResultsPlayers.count == 0) {
+            NSArray *fetchResults = [self.moc executeFetchRequest:requestGames error:&error];
+            pVC.game = [fetchResults lastObject];
             
-            UIAlertController * alert = [UIAlertController
-                                         alertControllerWithTitle:@"No Unfinished Game!"
-                                         message:@"There is no unfinished game to continue"
-                                         preferredStyle:UIAlertControllerStyleAlert];
-            
-            UIAlertAction* yesButton = [UIAlertAction
-                                        actionWithTitle:@"Return"
-                                        style:UIAlertActionStyleDefault
-                                        handler:^(UIAlertAction * action) {
-                                            //Handle your yes please button action here
-                                        }];
-            [alert addAction:yesButton];
-            [self presentViewController:alert animated:YES completion:nil];
-            
-        } else {
-        NSArray *fetchResults = [self.moc executeFetchRequest:requestGames error:&error];
-        pVC.game = [fetchResults lastObject];
+            playerArray  = (NSMutableArray*)pVC.game.player.array;
         
-        playerArray  = (NSMutableArray*)pVC.game.player.array;
-        }
     }
     
-    Points *playerPoints = [Points new];
-    Points *opponentPoints = [Points new];
+    Points *playerPoints = [NSEntityDescription insertNewObjectForEntityForName:@"Points" inManagedObjectContext:self.moc];
+    Points *opponentPoints = [NSEntityDescription insertNewObjectForEntityForName:@"Points" inManagedObjectContext:self.moc];
     NSOrderedSet *pointsSet = [[NSOrderedSet alloc] initWithObjects:playerPoints, opponentPoints, nil];
     playerArray[0].points = pointsSet;
     
@@ -161,8 +146,17 @@
 }
 -(NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
 {
+    NSFetchRequest *requestGames = [NSFetchRequest fetchRequestWithEntityName:@"Game"];
+    NSDate *date;
+    [requestGames setPredicate:[NSPredicate predicateWithFormat:@"timeEnded = %@", date]];
+    NSError *error = nil;
+    NSArray *fetchResultsGames = [self.moc executeFetchRequest:requestGames error:&error];
     
-    return 2;
+    if (fetchResultsGames.count == 0) {
+        return 1;
+    } else {
+        return 2;
+    }
 }
 
 
