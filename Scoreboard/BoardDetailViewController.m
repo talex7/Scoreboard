@@ -5,7 +5,7 @@
 //  Created by Matthew Mauro on 2016-11-28.
 //
 //
-
+#import "PlayerViewController.h"
 #import <QuartzCore/QuartzCore.h>
 #import "BoardDetailViewController.h"
 
@@ -52,10 +52,16 @@
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - Confirm Scores and unwind Segue
--(void)unwindForSegue:(UIStoryboardSegue *)unwindSegue towardsViewController:(UIViewController *)subsequentVC
+#pragma mark - Confirm Scores and Unwind Segue
+
+- (IBAction)confirmScore:(id)sender {
+    [self unwindForSegue:(UIStoryboardSegue*)sender towardsViewController:(PlayerViewController*)self.delegate];
+}
+
+-(IBAction)unwindForSegue:(UIStoryboardSegue *)unwindSegue towardsViewController:(UIViewController*)subsequentVC
 {
-    
+    self.delegate = unwindSegue.sourceViewController;
+    self.delegate.shotValues = self.shotValues;
 }
 
 #pragma mark - Score Buttons
