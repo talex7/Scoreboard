@@ -13,8 +13,15 @@
 @interface BoardDetailViewController ()
 @property (strong) NSArray *centreSpaces;
 @property (nonatomic) NSInteger currentCentre;
+@property (weak, nonatomic) IBOutlet UILabel *shot1Val;
+@property (weak, nonatomic) IBOutlet UILabel *shot2Val;
+@property (weak, nonatomic) IBOutlet UILabel *shot3Val;
 @property (weak, nonatomic) IBOutlet UIImageView *boardView;
 @property (nonatomic) CGFloat boardRotation;
+@property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *multiplierButtons;
+@property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *bullButtons;
+@property NSMutableArray *shotValues;
+@property (nonatomic) NSInteger shotCount;
 @end
 
 @implementation BoardDetailViewController
@@ -23,15 +30,52 @@
     [super viewDidLoad];
     [self.leftSliceLabel setTransform:CGAffineTransformMakeRotation(-M_PI_2/4.5)];
     [self.rightSliceLabel setTransform:CGAffineTransformMakeRotation(M_PI_2/4.5)];
+    
+    self.shotCount = 0;
+    self.shotValues = [[NSMutableArray alloc]initWithObjects:@"", @"", @"", nil];
+    [self updateShotValueLabels];
     self.currentCentre = 0;
     self.boardRotation = 0;
     self.centreSpaces = @[@"20", @"1", @"18", @"4", @"13", @"6", @"10", @"15", @"2", @"17", @"3", @"19", @"7", @"16", @"8", @"11", @"14", @"9", @"12", @"5"];
     self.centreSliceLabel.text = [self.centreSpaces objectAtIndex:self.currentCentre];
+    for (UIButton* button in self.multiplierButtons) {
+        [button addTarget:self action:@selector(enterScore:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    for (UIButton* button in self.bullButtons) {
+        [button addTarget:self action:@selector(enterScore:) forControlEvents:UIControlEventTouchUpInside];
+    }
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+
+
+
+#pragma mark - Score Buttons
+-(void)enterScore:(UIButton*)sender
+{
+    if ([self.multiplierButtons containsObject:sender]) {
+        [self.shotValues replaceObjectAtIndex:self.shotCount withObject:[NSString stringWithFormat:@"%@*%ld", self.centreSpaces[self.currentCentre], sender.tag]];
+    }else if ([self.bullButtons containsObject:sender]) {
+        [self.shotValues replaceObjectAtIndex:self.shotCount withObject:[NSString stringWithFormat:@"%@*%ld", self.centreSpaces[self.currentCentre], sender.tag]];
+
+    }
+    [self updateShotValueLabels];
+}
+
+-(void)updateShotValueLabels
+{
+    self.shot1Val.text = [self.shotValues objectAtIndex:0];
+    self.shot2Val.text = [self.shotValues objectAtIndex:1];
+    self.shot3Val.text = [self.shotValues objectAtIndex:2];
+    self.shotCount++;
+    if (self.shotCount == 3) {
+        [self setInteractivity:self.multiplierButtons To:NO];
+        [self setInteractivity:self.bullButtons To:NO];
+    }
 }
 
 #pragma mark - Rotate DartBoard methods
@@ -82,6 +126,14 @@
         self.boardView.transform = CGAffineTransformMakeRotation(self.boardRotation);
     }];
     [self performSelector:@selector(setSliceLabels:) withObject:self.centreSpaces[self.currentCentre] afterDelay:0.25];
+}
+
+#pragma mark - Button Interactivity
+-(void)setInteractivity:(NSArray*)buttons To:(BOOL)toSet
+{
+    for (UIButton* button in buttons) {
+        button.userInteractionEnabled = toSet;
+    }
 }
 
 @end
