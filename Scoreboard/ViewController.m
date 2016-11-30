@@ -47,40 +47,53 @@
 {
     UINavigationController *nav = (UINavigationController*)[segue destinationViewController];
     
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Player"];
-
+    NSFetchRequest *requestPlayers = [NSFetchRequest fetchRequestWithEntityName:@"Player"];
+    NSFetchRequest *requestGames = [NSFetchRequest fetchRequestWithEntityName:@"Game"];
+    NSDate *date; //do i need to make it "= nil"?
+    [requestGames setPredicate:[NSPredicate predicateWithFormat:@"timeEnded = %@", date]];
+    
     NSInteger gameType = [self.playerPicker selectedRowInComponent:0];
     PageViewController *pVC = (PageViewController*)nav.topViewController;
     
     NSError *error = nil;
-    NSArray *fetchResults = [self.moc executeFetchRequest:request error:&error];
+    NSArray *fetchResultsPlayers = [self.moc executeFetchRequest:requestPlayers error:&error];
+    NSArray *fetchResultsGames = [self.moc executeFetchRequest:requestGames error:&error];
+    
     NSMutableArray <Player *>*playerArray = [NSMutableArray new];
     
-    if (gameType == 0) {
+    if (gameType == 0 || fetchResultsGames.count == 0)
+    {
         Game *game = [NSEntityDescription insertNewObjectForEntityForName:@"Game" inManagedObjectContext:self.moc];
         game.timeStarted = [NSDate date];
         pVC.game = game;
         
-        if (fetchResults.count < 1) {
+        if (fetchResultsPlayers.count < 1) {
             Player *player = [NSEntityDescription insertNewObjectForEntityForName:@"Player" inManagedObjectContext:self.moc];
             player.name = @"Player";
             [playerArray addObject:player];
         } else {
-            [playerArray addObject:fetchResults[0]];
+            [playerArray addObject:fetchResultsPlayers[0]];
         }
         
-        if (fetchResults.count < 2) {
+        if (fetchResultsPlayers.count < 2) {
             Player *player = [NSEntityDescription insertNewObjectForEntityForName:@"Player" inManagedObjectContext:self.moc];
             player.name = @"Opponent";
             [playerArray addObject:player];
             
         } else {
-            [playerArray addObject:fetchResults[1]];
+            [playerArray addObject:fetchResultsPlayers[1]];
         }
         
         pVC.game.player = (NSOrderedSet<Player*>*)[NSOrderedSet orderedSetWithArray:playerArray];
     }
     
+    if (gameType == 1) {
+        NSArray *fetchResults = [self.moc executeFetchRequest:requestGames error:&error];
+        pVC.game = [fetchResults lastObject];
+        
+        playerArray  = (NSMutableArray*)pVC.game.player.array;
+        
+    }
     
     pVC.players = playerArray;
     
