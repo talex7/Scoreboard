@@ -13,6 +13,8 @@
 
 @protocol Pages <NSObject>
 @property (nonatomic) NSInteger pageIndex;
+@property (nonatomic) NSArray *players;
+@property (nonatomic) Game *game;
 @end
 
 

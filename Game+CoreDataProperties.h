@@ -2,7 +2,7 @@
 //  Game+CoreDataProperties.h
 //  Scoreboard
 //
-//  Created by Thomas Alexanian on 2016-11-29.
+//  Created by Thomas Alexanian on 2016-11-30.
 //
 //  This file was automatically generated and should not be edited.
 //

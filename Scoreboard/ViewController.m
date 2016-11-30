@@ -49,7 +49,7 @@
     
     NSFetchRequest *requestPlayers = [NSFetchRequest fetchRequestWithEntityName:@"Player"];
     NSFetchRequest *requestGames = [NSFetchRequest fetchRequestWithEntityName:@"Game"];
-    NSDate *date; //do i need to make it "= nil"?
+    NSDate *date; 
     [requestGames setPredicate:[NSPredicate predicateWithFormat:@"timeEnded = %@", date]];
     
     NSInteger gameType = [self.playerPicker selectedRowInComponent:0];
