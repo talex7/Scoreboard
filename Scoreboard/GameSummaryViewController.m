@@ -16,6 +16,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *p1Label;
 @property (weak, nonatomic) IBOutlet UILabel *p2Label;
 
+
 @end
 
 @implementation GameSummaryViewController
@@ -25,33 +26,67 @@
     self.p1Label.text = [self.game.player objectAtIndex:0].name;
     self.p2Label.text = [self.game.player objectAtIndex:1].name;
     
-    NSOrderedSet *p1Points = [self.game.player objectAtIndex:0].points;
-    NSOrderedSet *p2Points = [self.game.player objectAtIndex:1].points;
+    Points *p1Points = (Points*)[self.game.player objectAtIndex:0].points;
+    Points *p2Points = (Points*)[self.game.player objectAtIndex:1].points;
     
-    
-    
+    [self scoreFinder:p1Points in:self.p1ScoreImages];
+    [self scoreFinder:p2Points in:self.p2ScoreImages];
 }
 
--(void)scoreFinder:(Points*)points
+
+#pragma mark - Scoring fuctions
+
+-(void)scoreFinder:(Points*)points in:(NSArray*)array
 {
     NSEntityDescription *entity = [points entity];
     NSDictionary *attributes = [entity attributesByName];
     for (NSString *str in attributes) {
-        NSInteger *timesHit = [[points valueForKey:str]integerValue];
+        NSInteger timesHit = [[points valueForKey:str]integerValue];
         NSCharacterSet *p = [NSCharacterSet characterSetWithCharactersInString:@"p"];
         NSString *slice = [str stringByTrimmingCharactersInSet:p];
-        
+        [self setStrikeImageOf:[slice integerValue] inside:array forScore:timesHit];
     }
 }
-
--(UIImageView*)setStrikeImage:(NSInteger)sliceTag forScore:(NSInteger)timesHit
+-(void)getPlayerScore:(UILabel*)score andPoints:(Points*)points
 {
-    UIImageView *imageView = [UIImageView new];
-    
-    
-    
-    
-    return imageView;
+    NSInteger currentScore = [score.text integerValue];
+    NSInteger increasedScore = 0;
+    NSEntityDescription *entity = [points entity];
+    NSDictionary *attributes = [entity attributesByName];
+    for (NSString *str in attributes) {
+        NSInteger timesHit = [[points valueForKey:str]integerValue];
+        NSCharacterSet *p = [NSCharacterSet characterSetWithCharactersInString:@"p"];
+        NSInteger slice = [[str stringByTrimmingCharactersInSet:p]integerValue];
+        if (timesHit > 3) {
+            increasedScore += (timesHit-3)*slice;
+        }
+    }
+    currentScore += increasedScore;
+    score.text = [NSString stringWithFormat:@"%ld", currentScore];
+}
+-(void)setStrikeImageOf:(NSInteger)key inside:(NSArray*)scoreImages forScore:(NSInteger)timesHit
+{
+    for (UIImageView *imV in scoreImages) {
+        if (imV.tag == key) {
+            switch (timesHit) {
+                case 0:
+                    imV.image = nil;
+                    break;
+                case 1:
+                    imV.image = [UIImage imageNamed:@"single"];
+                    break;
+                case 2:
+                    imV.image = [UIImage imageNamed:@"double"];
+                    break;
+                case 3:
+                    imV.image = [UIImage imageNamed:@"triple"];
+                    break;
+                default:
+                    imV.image = [UIImage imageNamed:@"triple"];
+                    break;
+            }
+        }
+    }
 }
 
 @end
