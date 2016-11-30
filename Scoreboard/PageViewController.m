@@ -46,11 +46,13 @@
     }else if (index == 0){
         PlayerViewController *playerView = [self.storyboard instantiateViewControllerWithIdentifier:@"BoardController"];
         playerView.pageIndex = index;
+        playerView.players = self.players;
         return playerView;
     }else{
-        GameSummaryViewController *game = [self.storyboard instantiateViewControllerWithIdentifier:@"GameSummary"];
-        game.pageIndex = index;
-        return game;
+        GameSummaryViewController *gameSummary = [self.storyboard instantiateViewControllerWithIdentifier:@"GameSummary"];
+        gameSummary.pageIndex = index;
+        gameSummary.players = self.players;
+        return gameSummary;
     }
 }
 
