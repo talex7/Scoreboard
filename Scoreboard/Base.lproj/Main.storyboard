@@ -279,6 +279,7 @@
                     <connections>
                         <outlet property="boardView" destination="ti9-0R-mea" id="0rr-7u-mCr"/>
                         <outlet property="centreSliceLabel" destination="1k3-Xb-Srm" id="QRe-Oe-UsY"/>
+                        <outlet property="confirmScores" destination="kxe-fj-h0t" id="6Gt-or-5n2"/>
                         <outlet property="leftSliceLabel" destination="8x2-Ig-flr" id="6jO-Gi-c6r"/>
                         <outlet property="rightSliceLabel" destination="ycW-9e-Whj" id="Z9x-cl-GMp"/>
                         <outlet property="shot1Val" destination="BFG-0Z-ot3" id="qdo-fR-hG5"/>
