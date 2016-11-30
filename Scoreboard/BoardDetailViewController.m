@@ -64,8 +64,8 @@
     if ([self.bullButtons containsObject:sender]) {
         [self.shotValues replaceObjectAtIndex:self.shotCount withObject:[NSString stringWithFormat:@"25*%ld", sender.tag]];
     }
-    [self updateShotValueLabels];
     self.shotCount++;
+    [self updateShotValueLabels];
 }
 
 -(void)updateShotValueLabels
