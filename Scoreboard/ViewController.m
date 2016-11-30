@@ -71,6 +71,7 @@
         game.timeStarted = [NSDate date];
         pVC.game = game;
         
+        
         if (fetchResultsPlayers.count < 1) {
             Player *player = [NSEntityDescription insertNewObjectForEntityForName:@"Player" inManagedObjectContext:self.moc];
             player.name = @"Player";
