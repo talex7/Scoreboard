@@ -12,8 +12,7 @@
         <attribute name="gamesWon" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="idNo" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="totalPts" optional="YES" attributeType="Binary" syncable="YES"/>
-        <attribute name="totalShots" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="totalPts" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="game" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Game" inverseName="player" inverseEntity="Game" syncable="YES"/>
         <relationship name="points" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Points" inverseName="player" inverseEntity="Points" syncable="YES"/>
     </entity>
@@ -31,7 +30,7 @@
     </entity>
     <elements>
         <element name="Game" positionX="-54" positionY="-9" width="128" height="135"/>
-        <element name="Player" positionX="-63" positionY="-18" width="128" height="150"/>
+        <element name="Player" positionX="-63" positionY="-18" width="128" height="135"/>
         <element name="Points" positionX="-54" positionY="36" width="128" height="195"/>
     </elements>
 </model>

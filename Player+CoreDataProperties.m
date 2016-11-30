@@ -2,7 +2,7 @@
 //  Player+CoreDataProperties.m
 //  Scoreboard
 //
-//  Created by Thomas Alexanian on 2016-11-29.
+//  Created by Thomas Alexanian on 2016-11-30.
 //
 //  This file was automatically generated and should not be edited.
 //
@@ -19,7 +19,6 @@
 @dynamic idNo;
 @dynamic name;
 @dynamic totalPts;
-@dynamic totalShots;
 @dynamic game;
 @dynamic points;
 

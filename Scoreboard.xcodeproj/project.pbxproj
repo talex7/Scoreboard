@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		740B161E1DEE46970073C2D8 /* Game+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 740B161D1DEE46970073C2D8 /* Game+CoreDataProperties.m */; };
 		747B90B21DEBAF05001D5A9D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 747B90B11DEBAF05001D5A9D /* main.m */; };
 		747B90B51DEBAF05001D5A9D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 747B90B41DEBAF05001D5A9D /* AppDelegate.m */; };
 		747B90B81DEBAF05001D5A9D /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 747B90B71DEBAF05001D5A9D /* ViewController.m */; };
@@ -23,18 +22,18 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		740B16071DEE2A380073C2D8 /* Game+CoreDataClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Game+CoreDataClass.h"; path = "../Game+CoreDataClass.h"; sourceTree = "<group>"; };
-		740B16081DEE2A380073C2D8 /* Game+CoreDataClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "Game+CoreDataClass.m"; path = "../Game+CoreDataClass.m"; sourceTree = "<group>"; };
-		740B160B1DEE2A380073C2D8 /* Player+CoreDataClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Player+CoreDataClass.h"; path = "../Player+CoreDataClass.h"; sourceTree = "<group>"; };
-		740B160C1DEE2A380073C2D8 /* Player+CoreDataClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "Player+CoreDataClass.m"; path = "../Player+CoreDataClass.m"; sourceTree = "<group>"; };
-		740B160D1DEE2A380073C2D8 /* Player+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Player+CoreDataProperties.h"; path = "../Player+CoreDataProperties.h"; sourceTree = "<group>"; };
-		740B160E1DEE2A380073C2D8 /* Player+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "Player+CoreDataProperties.m"; path = "../Player+CoreDataProperties.m"; sourceTree = "<group>"; };
-		740B160F1DEE2A380073C2D8 /* Points+CoreDataClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Points+CoreDataClass.h"; path = "../Points+CoreDataClass.h"; sourceTree = "<group>"; };
-		740B16101DEE2A380073C2D8 /* Points+CoreDataClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "Points+CoreDataClass.m"; path = "../Points+CoreDataClass.m"; sourceTree = "<group>"; };
-		740B16111DEE2A380073C2D8 /* Points+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Points+CoreDataProperties.h"; path = "../Points+CoreDataProperties.h"; sourceTree = "<group>"; };
-		740B16121DEE2A380073C2D8 /* Points+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "Points+CoreDataProperties.m"; path = "../Points+CoreDataProperties.m"; sourceTree = "<group>"; };
-		740B161C1DEE46970073C2D8 /* Game+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Game+CoreDataProperties.h"; path = "../Game+CoreDataProperties.h"; sourceTree = "<group>"; };
-		740B161D1DEE46970073C2D8 /* Game+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "Game+CoreDataProperties.m"; path = "../Game+CoreDataProperties.m"; sourceTree = "<group>"; };
+		740B161F1DEF3C840073C2D8 /* Points+CoreDataClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Points+CoreDataClass.h"; sourceTree = "<group>"; };
+		740B16201DEF3C840073C2D8 /* Points+CoreDataClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Points+CoreDataClass.m"; sourceTree = "<group>"; };
+		740B16211DEF3C840073C2D8 /* Points+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Points+CoreDataProperties.h"; sourceTree = "<group>"; };
+		740B16221DEF3C840073C2D8 /* Points+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Points+CoreDataProperties.m"; sourceTree = "<group>"; };
+		740B16231DEF3C840073C2D8 /* Game+CoreDataClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Game+CoreDataClass.h"; sourceTree = "<group>"; };
+		740B16241DEF3C840073C2D8 /* Game+CoreDataClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Game+CoreDataClass.m"; sourceTree = "<group>"; };
+		740B16251DEF3C840073C2D8 /* Game+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Game+CoreDataProperties.h"; sourceTree = "<group>"; };
+		740B16261DEF3C840073C2D8 /* Game+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Game+CoreDataProperties.m"; sourceTree = "<group>"; };
+		740B16271DEF3C840073C2D8 /* Player+CoreDataClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Player+CoreDataClass.h"; sourceTree = "<group>"; };
+		740B16281DEF3C840073C2D8 /* Player+CoreDataClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Player+CoreDataClass.m"; sourceTree = "<group>"; };
+		740B16291DEF3C840073C2D8 /* Player+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Player+CoreDataProperties.h"; sourceTree = "<group>"; };
+		740B162A1DEF3C840073C2D8 /* Player+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Player+CoreDataProperties.m"; sourceTree = "<group>"; };
 		747B90AD1DEBAF05001D5A9D /* Scoreboard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Scoreboard.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		747B90B11DEBAF05001D5A9D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		747B90B31DEBAF05001D5A9D /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -72,6 +71,18 @@
 		747B90A41DEBAF05001D5A9D = {
 			isa = PBXGroup;
 			children = (
+				740B161F1DEF3C840073C2D8 /* Points+CoreDataClass.h */,
+				740B16201DEF3C840073C2D8 /* Points+CoreDataClass.m */,
+				740B16211DEF3C840073C2D8 /* Points+CoreDataProperties.h */,
+				740B16221DEF3C840073C2D8 /* Points+CoreDataProperties.m */,
+				740B16231DEF3C840073C2D8 /* Game+CoreDataClass.h */,
+				740B16241DEF3C840073C2D8 /* Game+CoreDataClass.m */,
+				740B16251DEF3C840073C2D8 /* Game+CoreDataProperties.h */,
+				740B16261DEF3C840073C2D8 /* Game+CoreDataProperties.m */,
+				740B16271DEF3C840073C2D8 /* Player+CoreDataClass.h */,
+				740B16281DEF3C840073C2D8 /* Player+CoreDataClass.m */,
+				740B16291DEF3C840073C2D8 /* Player+CoreDataProperties.h */,
+				740B162A1DEF3C840073C2D8 /* Player+CoreDataProperties.m */,
 				747B90AF1DEBAF05001D5A9D /* Scoreboard */,
 				747B90AE1DEBAF05001D5A9D /* Products */,
 			);
@@ -113,18 +124,6 @@
 		747B90B01DEBAF05001D5A9D /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				740B161C1DEE46970073C2D8 /* Game+CoreDataProperties.h */,
-				740B161D1DEE46970073C2D8 /* Game+CoreDataProperties.m */,
-				740B16071DEE2A380073C2D8 /* Game+CoreDataClass.h */,
-				740B16081DEE2A380073C2D8 /* Game+CoreDataClass.m */,
-				740B160B1DEE2A380073C2D8 /* Player+CoreDataClass.h */,
-				740B160C1DEE2A380073C2D8 /* Player+CoreDataClass.m */,
-				740B160D1DEE2A380073C2D8 /* Player+CoreDataProperties.h */,
-				740B160E1DEE2A380073C2D8 /* Player+CoreDataProperties.m */,
-				740B160F1DEE2A380073C2D8 /* Points+CoreDataClass.h */,
-				740B16101DEE2A380073C2D8 /* Points+CoreDataClass.m */,
-				740B16111DEE2A380073C2D8 /* Points+CoreDataProperties.h */,
-				740B16121DEE2A380073C2D8 /* Points+CoreDataProperties.m */,
 				747B90CA1DEC9D00001D5A9D /* GameManager.h */,
 				747B90CB1DEC9D00001D5A9D /* GameManager.m */,
 				747B90B11DEBAF05001D5A9D /* main.m */,
@@ -209,7 +208,6 @@
 				747B90B21DEBAF05001D5A9D /* main.m in Sources */,
 				9503499D1DECD38300C54098 /* BoardDetailViewController.m in Sources */,
 				950349991DECB4B300C54098 /* GameSummaryViewController.m in Sources */,
-				740B161E1DEE46970073C2D8 /* Game+CoreDataProperties.m in Sources */,
 				747B90BE1DEBAF05001D5A9D /* Scoreboard.xcdatamodeld in Sources */,
 				950349931DECB34F00C54098 /* PageViewController.m in Sources */,
 			);
