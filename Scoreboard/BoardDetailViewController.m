@@ -45,6 +45,16 @@
     for (UIButton* button in self.bullButtons) {
         [button addTarget:self action:@selector(enterScore:) forControlEvents:UIControlEventTouchUpInside];
     }
+    UITapGestureRecognizer *tapGestureRecognizer1 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(labelTapped:)];
+    UITapGestureRecognizer *tapGestureRecognizer2 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(labelTapped:)];
+    UITapGestureRecognizer *tapGestureRecognizer3 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(labelTapped:)];
+    tapGestureRecognizer1.numberOfTapsRequired = 1;
+    tapGestureRecognizer2.numberOfTapsRequired = 1;
+    tapGestureRecognizer3.numberOfTapsRequired = 1;
+    [self.shot1Val addGestureRecognizer:tapGestureRecognizer1];
+    [self.shot2Val addGestureRecognizer:tapGestureRecognizer2];
+    [self.shot3Val addGestureRecognizer:tapGestureRecognizer3];
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -90,21 +100,29 @@
             self.shot1Val.backgroundColor = highlightColour;
             self.shot2Val.backgroundColor = nil;
             self.shot3Val.backgroundColor = nil;
+            self.shot1Val.userInteractionEnabled = NO;
             break;
         case 1:
             self.shot1Val.backgroundColor = nil;
             self.shot2Val.backgroundColor = highlightColour;
             self.shot3Val.backgroundColor = nil;
+            self.shot1Val.userInteractionEnabled = YES;
+            self.shot2Val.userInteractionEnabled = NO;
             break;
         case 2:
             self.shot1Val.backgroundColor = nil;
             self.shot2Val.backgroundColor = nil;
             self.shot3Val.backgroundColor = highlightColour;
+            self.shot1Val.userInteractionEnabled = NO;
+            self.shot2Val.userInteractionEnabled = YES;
+            self.shot3Val.userInteractionEnabled = NO;
             break;
         default:
             self.shot1Val.backgroundColor = nil;
             self.shot2Val.backgroundColor = nil;
             self.shot3Val.backgroundColor = nil;
+            self.shot2Val.userInteractionEnabled = NO;
+            self.shot3Val.userInteractionEnabled = YES;
             break;
     }
     if (self.shotCount == 3) {
@@ -175,6 +193,23 @@
     for (UIButton* button in buttons) {
         button.userInteractionEnabled = toSet;
     }
+}
+
+-(void)labelTapped:(UILabel*)sender {
+    if (self.shotCount == 1) {
+        self.shotValues[0] = @"";
+        self.shotCount--;
+        [self updateShotValueLabels];
+    } else if (self.shotCount == 2) {
+        self.shotValues[1] = @"";
+        self.shotCount--;
+        [self updateShotValueLabels];
+    } else {
+        self.shotValues[2] = @"";
+        self.shotCount--;
+        [self updateShotValueLabels];
+    }
+    
 }
 
 @end
