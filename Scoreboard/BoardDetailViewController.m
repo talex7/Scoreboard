@@ -70,7 +70,6 @@
 
 -(IBAction)unwindForSegue:(UIStoryboardSegue *)unwindSegue towardsViewController:(UIViewController*)subsequentVC
 {
-    self.delegate = unwindSegue.sourceViewController;
     self.delegate.shotValues = self.shotValues;
 }
 

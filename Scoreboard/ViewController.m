@@ -72,6 +72,7 @@
         Points *opponentPoints = [NSEntityDescription insertNewObjectForEntityForName:@"Points" inManagedObjectContext:self.moc];
         game.points = [[NSOrderedSet alloc] initWithObjects:playerPoints, opponentPoints, nil];
         game.timeStarted = [NSDate date];
+        game.turnCounter = 1;
         
         if (fetchResultsPlayers.count < 1) {
             Player *player = [NSEntityDescription insertNewObjectForEntityForName:@"Player" inManagedObjectContext:self.moc];

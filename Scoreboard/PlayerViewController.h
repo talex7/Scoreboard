@@ -15,9 +15,9 @@
 
 
 @property (nonatomic) NSArray<Player*> *players;
-@property (nonatomic) Game *game;
-@property NSArray *shotValues;
+@property (nonatomic) NSManagedObjectContext *moc;
 @property (nonatomic) NSInteger pageIndex;
 @property (nonatomic) NSInteger shotCount;
+@property (nonatomic) NSArray *shotValues;
 
 @end

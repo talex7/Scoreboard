@@ -11,7 +11,7 @@
 #import "GameSummaryViewController.h"
 
 @interface PageViewController ()
-
+@property Game *game;
 @end
 
 @implementation PageViewController
@@ -23,6 +23,18 @@
     self.viewCs = [NSMutableArray new];
     PlayerViewController *board = [self.storyboard instantiateViewControllerWithIdentifier:@"BoardController"];
     self.playerViewController = board;
+    
+    AppDelegate *appDelegate = (AppDelegate*)([[UIApplication sharedApplication] delegate]);
+    self.moc = appDelegate.persistentContainer.viewContext;
+    
+    NSError *error = nil;
+    NSFetchRequest *gameRequest = [NSFetchRequest fetchRequestWithEntityName:@"Game"];
+    NSDate *date;
+    [gameRequest setPredicate:[NSPredicate predicateWithFormat:@"timeEnded = %@", date]];
+    NSArray *fetchResultsGames = [self.moc executeFetchRequest:gameRequest error:&error];
+    
+    Game *g = [fetchResultsGames objectAtIndex:0];
+    self.game = g;
     
     [self.viewCs addObject:board];
     
@@ -46,15 +58,12 @@
     }else if (index == 0){
         PlayerViewController *playerView = [self.storyboard instantiateViewControllerWithIdentifier:@"BoardController"];
         playerView.pageIndex = index;
-        playerView.players = self.players;
-        
-        playerView.game = self.game;
-        
+        playerView.moc = self.moc;
         return playerView;
     }else{
         GameSummaryViewController *gameSummary = [self.storyboard instantiateViewControllerWithIdentifier:@"GameSummary"];
         gameSummary.pageIndex = index;
-        gameSummary.players = self.players;
+        gameSummary.moc = self.moc;
         return gameSummary;
     }
 }

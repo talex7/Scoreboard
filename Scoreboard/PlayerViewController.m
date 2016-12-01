@@ -13,20 +13,18 @@
 @interface PlayerViewController () <Pages>
 @property (weak, nonatomic) IBOutlet UIButton *finshButton;
 @property (weak, nonatomic) IBOutlet UILabel *currentPlayerLabel;
-@property (nonatomic) NSManagedObjectContext *moc;
+@property (nonatomic) NSInteger turnCounter;
+@property Game *game;
 @end
 
 @implementation PlayerViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    AppDelegate *appDelegate = (AppDelegate*)([[UIApplication sharedApplication] delegate]);
-    self.moc = appDelegate.persistentContainer.viewContext;
-    
-    self.game.turnCounter = arc4random_uniform(2)+1;
     
     self.finshButton.hidden = YES;
     self.finshButton.userInteractionEnabled = NO;
+    
     
     if (self.game.turnCounter == 1) {
         UIAlertController * alert = [UIAlertController
@@ -43,17 +41,35 @@
         [alert addAction:yesButton];
         [self presentViewController:alert animated:YES completion:nil];
     }
-    [self turnProgression];
 }
-
+-(void)viewWillAppear:(BOOL)animated
+{
+    AppDelegate *appDelegate = (AppDelegate*)([[UIApplication sharedApplication] delegate]);
+    self.moc = appDelegate.persistentContainer.viewContext;
+    
+    NSError *error = nil;
+    NSFetchRequest *gameRequest = [NSFetchRequest fetchRequestWithEntityName:@"Game"];
+    NSFetchRequest *playerRequest = [NSFetchRequest fetchRequestWithEntityName:@"Player"];
+    NSDate *date;
+    [gameRequest setPredicate:[NSPredicate predicateWithFormat:@"timeEnded = %@", date]];
+    NSArray *fetchResultsGames = [self.moc executeFetchRequest:gameRequest error:&error];
+    NSArray *fetchResultsPlayer = [self.moc executeFetchRequest:playerRequest error:&error];
+    
+    Game *g = [fetchResultsGames objectAtIndex:0];
+    self.game = g;
+    self.players = fetchResultsPlayer;
+    self.turnCounter = g.turnCounter;
+    [self turnProgression];
+    [self updatePlayerScoring];
+}
 
 #pragma mark - Turn Progress/Reset
 -(void)turnProgression
 {
-    if (self.game.turnCounter % 2 == 0) {
-        self.currentPlayerLabel.text = [self.game.player objectAtIndex: 0].name;
+    if (self.turnCounter % 2 == 0) {
+        self.currentPlayerLabel.text = [self.players objectAtIndex:1].name;
     }else{
-        self.currentPlayerLabel.text = [self.game.player objectAtIndex: 1].name;
+        self.currentPlayerLabel.text = [self.players objectAtIndex:0].name;
     }
     self.game.turnCounter++;
 }
@@ -78,11 +94,19 @@
         NSInteger shot3Val = [[shot3 substringToIndex:shot3.length-2]integerValue];
         NSInteger shot3Multi = [[shot3 substringFromIndex:shot3.length-1]integerValue];
         
+        //fetch current point entity
+        
+        NSError *error = nil;
+        NSFetchRequest *pointsRequest = [NSFetchRequest fetchRequestWithEntityName:@"Points"];
+        NSArray *fetchResultsPoints = [self.moc executeFetchRequest:pointsRequest error:&error];
+        
         Points *poi;
         if (self.game.turnCounter % 2 == 0) {
-            poi = (Points*)[self.game.player objectAtIndex:0].points;
+            poi = (Points*)[fetchResultsPoints objectAtIndex:1];
+            poi.player = [self.players objectAtIndex:1];
             NSEntityDescription *entity = [poi entity];
             NSDictionary *attributes = [entity attributesByName];
+            NSLog(@"%@", attributes.allKeys);
             
             NSError *error = nil;
             for (NSString *str in attributes) {
@@ -93,30 +117,25 @@
                 if (shot1Val == slice) {
                     timesHit += shot1Multi;
                     [poi setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
-                    if ([self.moc save:&error]) {
-                        NSAssert(NO, @"Error saving context: %@\n%@", [error localizedDescription], [error userInfo]);
-                    }
                 }else if (shot2Val == slice){
                     timesHit += shot2Multi;
                     [poi setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
-                    if ([self.moc save:&error]) {
-                        NSAssert(NO, @"Error saving context: %@\n%@", [error localizedDescription], [error userInfo]);
-                    }
                 }else if (shot3Val == slice){
                     timesHit += shot3Multi;
                     [poi setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
-                    if ([self.moc save:&error]) {
-                        NSAssert(NO, @"Error saving context: %@\n%@", [error localizedDescription], [error userInfo]);
-                    }
+                    
                 }
             }
-            
+            if ([self.moc save:&error]) {
+                NSAssert(NO, @"Error saving context: %@\n%@", [error localizedDescription], [error userInfo]);
+            }
         }else{
-            poi = (Points*)[self.game.player objectAtIndex:1].points;
+            poi = (Points*)[fetchResultsPoints objectAtIndex:0];
+            poi.player = [self.players objectAtIndex:0];
             NSEntityDescription *entity = [poi entity];
             NSDictionary *attributes = [entity attributesByName];
-            
             NSError *error = nil;
+            
             for (NSString *str in attributes) {
                 NSInteger timesHit = [[poi valueForKey:str]integerValue];
                 NSCharacterSet *p = [NSCharacterSet characterSetWithCharactersInString:@"p"];
@@ -124,24 +143,27 @@
                 if (shot1Val == slice) {
                     timesHit += shot1Multi;
                     [poi setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
-                    if ([self.moc save:&error]) {
-                        NSAssert(NO, @"Error saving context: %@\n%@", [error localizedDescription], [error userInfo]);
-                    }
                 }else if (shot2Val == slice){
                     timesHit += shot2Multi;
                     [poi setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
-                    if ([self.moc save:&error]) {
-                        NSAssert(NO, @"Error saving context: %@\n%@", [error localizedDescription], [error userInfo]);
-                    }
                 }else if (shot3Val == slice){
                     timesHit += shot3Multi;
                     [poi setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
-                    if ([self.moc save:&error]) {
-                        NSAssert(NO, @"Error saving context: %@\n%@", [error localizedDescription], [error userInfo]);
-                    }
                 }
             }
+            if ([self.moc save:&error]) {
+                NSAssert(NO, @"Error saving context: %@\n%@", [error localizedDescription], [error userInfo]);
+            }
         }
+    }
+    [self turnProgression];
+}
+
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:@"detail"]) {
+        BoardDetailViewController *vc = segue.destinationViewController;
+        vc.delegate = self;
     }
 }
 

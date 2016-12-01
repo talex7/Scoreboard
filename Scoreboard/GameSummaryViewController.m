@@ -23,14 +23,34 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.p1Label.text = [self.game.player objectAtIndex:0].name;
-    self.p2Label.text = [self.game.player objectAtIndex:1].name;
     
-    Points *p1Points = (Points*)[self.game.player objectAtIndex:0].points;
-    Points *p2Points = (Points*)[self.game.player objectAtIndex:1].points;
+}
+-(void)viewWillAppear:(BOOL)animated
+{
+    NSError *error = nil;
+    NSFetchRequest *gameRequest = [NSFetchRequest fetchRequestWithEntityName:@"Game"];
+    NSFetchRequest *pointsRequest = [NSFetchRequest fetchRequestWithEntityName:@"Points"];
+    NSFetchRequest *playerRequest = [NSFetchRequest fetchRequestWithEntityName:@"Player"];
+    
+    NSDate *date;
+    [gameRequest setPredicate:[NSPredicate predicateWithFormat:@"timeEnded = %@", date]];
+    
+    NSArray *fetchResultsGames = [self.moc executeFetchRequest:gameRequest error:&error];
+    NSArray *fetchResultsPoints = [self.moc executeFetchRequest:pointsRequest error:&error];
+    NSArray *fetchResultsPlayer = [self.moc executeFetchRequest:playerRequest error:&error];
+    
+    Game *g = [fetchResultsGames objectAtIndex:0];
+    
+    self.p1Label.text = ((Player*)[fetchResultsPlayer objectAtIndex:0]).name;
+    self.p2Label.text = ((Player*)[fetchResultsPlayer objectAtIndex:1]).name;
+    
+    Points *p1Points = [fetchResultsPoints objectAtIndex:0];
+    Points *p2Points = [fetchResultsPoints objectAtIndex:1];
     
     [self scoreFinder:p1Points in:self.p1ScoreImages];
     [self scoreFinder:p2Points in:self.p2ScoreImages];
+    [self getPlayerScore:self.p1Label andPoints:p1Points];
+    [self getPlayerScore:self.p2Label andPoints:p2Points];
 }
 
 

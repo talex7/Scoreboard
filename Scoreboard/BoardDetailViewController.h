@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @protocol displayBoard <NSObject>
-@property NSArray *shotValues;
+@property (nonatomic) NSArray *shotValues;
 @end
 
 @interface BoardDetailViewController : UIViewController
