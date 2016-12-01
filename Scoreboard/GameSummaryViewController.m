@@ -35,14 +35,14 @@
     NSDate *date;
     [gameRequest setPredicate:[NSPredicate predicateWithFormat:@"timeEnded = %@", date]];
     
-    NSArray *fetchResultsGames = [self.moc executeFetchRequest:gameRequest error:&error];
     NSArray *fetchResultsPoints = [self.moc executeFetchRequest:pointsRequest error:&error];
     NSArray *fetchResultsPlayer = [self.moc executeFetchRequest:playerRequest error:&error];
     
-    Game *g = [fetchResultsGames objectAtIndex:0];
+    Player *p1 = [fetchResultsPlayer objectAtIndex:0];
+    Player *p2 = [fetchResultsPlayer objectAtIndex:1];
     
-    self.p1Label.text = ((Player*)[fetchResultsPlayer objectAtIndex:0]).name;
-    self.p2Label.text = ((Player*)[fetchResultsPlayer objectAtIndex:1]).name;
+    self.p1Label.text = p1.name;
+    self.p2Label.text = p2.name;
     
     Points *p1Points = [fetchResultsPoints objectAtIndex:0];
     Points *p2Points = [fetchResultsPoints objectAtIndex:1];
@@ -50,8 +50,12 @@
     [self scoreFinder:p1Points in:self.p1ScoreImages];
     [self scoreFinder:p2Points in:self.p2ScoreImages];
     
-    [self getPlayerScore:self.p1ScoreLabel andPoints:p1Points againstOpponent:p2Points];
-    [self getPlayerScore:self.p2ScoreLabel andPoints:p2Points againstOpponent:p1Points];
+    p1.totalPts = [self getPlayerScore:self.p1ScoreLabel andPoints:p1Points againstOpponent:p2Points];
+    p2.totalPts = [self getPlayerScore:self.p2ScoreLabel andPoints:p2Points againstOpponent:p1Points];
+    
+    if (![self.moc save:&error]) {
+        NSAssert(NO, @"Error saving context: %@\n%@", [error localizedDescription], [error userInfo]);
+    }
 }
 
 
@@ -70,7 +74,8 @@
 }
 
 // sets Score Label for respective Player
--(void)getPlayerScore:(UILabel*)score andPoints:(Points*)points againstOpponent:(Points*)oppPoints
+
+-(NSInteger)getPlayerScore:(UILabel*)score andPoints:(Points*)points againstOpponent:(Points*)oppPoints
 {
     NSInteger currentScore = [score.text integerValue];
     NSInteger increasedScore = 0;
@@ -80,8 +85,6 @@
         NSInteger timesHit = [[points valueForKey:str]integerValue];
         NSCharacterSet *p = [NSCharacterSet characterSetWithCharactersInString:@"p"];
         NSInteger slice = [[str stringByTrimmingCharactersInSet:p]integerValue];
-        
-        
         if ([[oppPoints valueForKey:str]integerValue] < 3) {
             if (timesHit > 3) {
                 increasedScore += (timesHit-3)*slice;
@@ -90,7 +93,10 @@
     }
     currentScore = increasedScore;
     score.text = [NSString stringWithFormat:@"%ld", currentScore];
+    return currentScore;
 }
+
+
 -(void)setStrikeImageOf:(NSInteger)key inside:(NSArray*)scoreImages forScore:(NSInteger)timesHit
 {
     for (UIImageView *imV in scoreImages) {

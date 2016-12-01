@@ -48,7 +48,7 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <segue destination="sxn-wT-MUg" kind="show" id="yqr-8J-3WC"/>
+                                    <segue destination="sxn-wT-MUg" kind="show" identifier="sup" id="yqr-8J-3WC"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NXL-Cm-YXt">
@@ -333,9 +333,12 @@
                                     <constraint firstAttribute="height" constant="36" id="4Y4-Mt-CPj"/>
                                     <constraint firstAttribute="width" constant="120" id="sGA-uC-hkX"/>
                                 </constraints>
-                                <state key="normal" title="Finish Round">
+                                <state key="normal" title="Return to Menu">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
+                                <connections>
+                                    <action selector="toMainMenu:" destination="hLi-qF-k2S" eventType="touchUpInside" id="j7d-UK-DRf"/>
+                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4lU-rP-RGS">
                                 <rect key="frame" x="19" y="101" width="338" height="29"/>
@@ -366,6 +369,7 @@
                     <navigationItem key="navigationItem" id="fFe-AA-7RZ"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
                     <connections>
+                        <outlet property="board" destination="hMj-mZ-czw" id="Jq1-s2-b3h"/>
                         <outlet property="currentPlayerLabel" destination="4lU-rP-RGS" id="gWJ-Sr-PLx"/>
                         <outlet property="finshButton" destination="9bI-cM-hMQ" id="ohX-rk-IJa"/>
                     </connections>
