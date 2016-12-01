@@ -13,7 +13,6 @@
 @interface PlayerViewController () <Pages>
 @property (weak, nonatomic) IBOutlet UIButton *finshButton;
 @property (weak, nonatomic) IBOutlet UILabel *currentPlayerLabel;
-@property (nonatomic) NSInteger turnCounter;
 @property Game *game;
 @end
 
@@ -25,25 +24,6 @@
     self.finshButton.hidden = YES;
     self.finshButton.userInteractionEnabled = NO;
     
-    
-    if (self.game.turnCounter == 1) {
-        UIAlertController * alert = [UIAlertController
-                                     alertControllerWithTitle:@"Flipping"
-                                     message:@"Flipping Coin for Turn Order"
-                                     preferredStyle:UIAlertControllerStyleAlert];
-        
-        UIAlertAction* yesButton = [UIAlertAction
-                                    actionWithTitle:@"Got It!"
-                                    style:UIAlertActionStyleDefault
-                                    handler:^(UIAlertAction * action) {
-                                        //Handle your yes please button action here
-                                    }];
-        [alert addAction:yesButton];
-        [self presentViewController:alert animated:YES completion:nil];
-    }
-}
--(void)viewWillAppear:(BOOL)animated
-{
     AppDelegate *appDelegate = (AppDelegate*)([[UIApplication sharedApplication] delegate]);
     self.moc = appDelegate.persistentContainer.viewContext;
     
@@ -58,20 +38,48 @@
     Game *g = [fetchResultsGames objectAtIndex:0];
     self.game = g;
     self.players = fetchResultsPlayer;
-    self.turnCounter = g.turnCounter;
-    [self turnProgression];
+
+    
+    if (self.game.turnCounter == 1) {
+        UIAlertController * alert = [UIAlertController
+                                     alertControllerWithTitle:@"Flipping"
+                                     message:@"Flipping Coin for Turn Order"
+                                     preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction* yesButton = [UIAlertAction
+                                    actionWithTitle:@"Got It!"
+                                    style:UIAlertActionStyleDefault
+                                    handler:^(UIAlertAction * action) {
+                                        //Handle your yes please button action here
+                                        self.game.turnCounter += arc4random_uniform(2);
+                                        if (self.game.turnCounter % 2 == 0) {
+                                            self.currentPlayerLabel.text = [self.players objectAtIndex:1].name;
+                                        }else{
+                                            self.currentPlayerLabel.text = [self.players objectAtIndex:0].name;
+                                        }
+                                    }];
+        [alert addAction:yesButton];
+        [self presentViewController:alert animated:YES completion:nil];
+    }
+}
+-(void)viewWillAppear:(BOOL)animated
+{
+    if (self.game.turnCounter % 2 == 0) {
+        self.currentPlayerLabel.text = [self.players objectAtIndex:1].name;
+    }else{
+        self.currentPlayerLabel.text = [self.players objectAtIndex:0].name;
+    }
     [self updatePlayerScoring];
 }
 
 #pragma mark - Turn Progress/Reset
 -(void)turnProgression
 {
-    if (self.turnCounter % 2 == 0) {
+    if (self.game.turnCounter % 2 == 0) {
         self.currentPlayerLabel.text = [self.players objectAtIndex:1].name;
     }else{
         self.currentPlayerLabel.text = [self.players objectAtIndex:0].name;
     }
-    self.game.turnCounter++;
 }
 
 #pragma mark - Save Scoring to Core Data
@@ -150,20 +158,24 @@
                 if (shot1Val == slice) {
                     timesHit += shot1Multi;
                     [poi setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
-                }else if (shot2Val == slice){
+                }
+                if (shot2Val == slice){
                     timesHit += shot2Multi;
                     [poi setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
-                }else if (shot3Val == slice){
+                }
+                if (shot3Val == slice){
                     timesHit += shot3Multi;
                     [poi setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
                 }
             }
-            if ([self.moc save:&error]) {
+            if (![self.moc save:&error]) {
                 NSAssert(NO, @"Error saving context: %@\n%@", [error localizedDescription], [error userInfo]);
             }
         }
+        self.game.turnCounter ++;
+        [self turnProgression];
     }
-    [self turnProgression];
+    self.shotValues = nil;
 }
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender

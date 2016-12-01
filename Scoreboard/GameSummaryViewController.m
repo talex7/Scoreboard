@@ -49,6 +49,7 @@
     
     [self scoreFinder:p1Points in:self.p1ScoreImages];
     [self scoreFinder:p2Points in:self.p2ScoreImages];
+    
     [self getPlayerScore:self.p1ScoreLabel andPoints:p1Points];
     [self getPlayerScore:self.p2ScoreLabel andPoints:p2Points];
 }
@@ -67,6 +68,8 @@
         [self setStrikeImageOf:[slice integerValue] inside:array forScore:timesHit];
     }
 }
+
+// sets Score Label for respective Player
 -(void)getPlayerScore:(UILabel*)score andPoints:(Points*)points
 {
     NSInteger currentScore = [score.text integerValue];
@@ -81,7 +84,7 @@
             increasedScore += (timesHit-3)*slice;
         }
     }
-    currentScore += increasedScore;
+    currentScore = increasedScore;
     score.text = [NSString stringWithFormat:@"%ld", currentScore];
 }
 -(void)setStrikeImageOf:(NSInteger)key inside:(NSArray*)scoreImages forScore:(NSInteger)timesHit
