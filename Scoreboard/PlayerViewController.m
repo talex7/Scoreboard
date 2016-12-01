@@ -5,7 +5,7 @@
 //  Created by Matthew Mauro on 2016-11-28.
 //
 //
-
+#import "Player+CoreDataClass.h"
 #import "Points+CoreDataClass.h"
 #import "PageViewController.h"
 #import "PlayerViewController.h"
@@ -72,6 +72,24 @@
         self.currentPlayerLabel.text = [self.players objectAtIndex:0].name;
     }
     [self updatePlayerScoring];
+    if ([self checkIfGameIsComplete] == YES) {
+        UIAlertController * alert = [UIAlertController
+                                     alertControllerWithTitle:@"It's Over"
+                                     message:@"Game has ended"
+                                     preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction* yesButton = [UIAlertAction
+                                    actionWithTitle:@"Done"
+                                    style:UIAlertActionStyleDefault
+                                    handler:^(UIAlertAction * action) {
+                                        //Handle your yes please button action here
+                                        self.finshButton.hidden = NO;
+                                        self.finshButton.userInteractionEnabled = YES;
+                                        self.board.userInteractionEnabled = NO;
+                                    }];
+        [alert addAction:yesButton];
+        [self presentViewController:alert animated:YES completion:nil];
+    }
 }
 
 - (IBAction)toMainMenu:(id)sender
@@ -111,104 +129,95 @@
         NSInteger shot3Multi = [[shot3 substringFromIndex:shot3.length-1]integerValue];
         
         //fetch current point entity
-        
         NSError *error = nil;
         NSFetchRequest *pointsRequest = [NSFetchRequest fetchRequestWithEntityName:@"Points"];
         NSArray *fetchResultsPoints = [self.moc executeFetchRequest:pointsRequest error:&error];
-        
-        Points *poi;
+        Points *p1Points = [fetchResultsPoints objectAtIndex:0];
+        Points *p2Points = [fetchResultsPoints objectAtIndex:1];
         if (self.game.turnCounter % 2 == 0) {
-            poi = (Points*)[fetchResultsPoints objectAtIndex:1];
-            poi.player = [self.players objectAtIndex:1];
-            NSEntityDescription *entity = [poi entity];
+            NSEntityDescription *entity = [p2Points entity];
             NSDictionary *attributes = [entity attributesByName];
-            
             NSError *error = nil;
             for (NSString *str in attributes) {
-                
-                NSInteger timesHit = [[poi valueForKey:str]integerValue];
+                NSInteger timesHit = [[p2Points valueForKey:str]integerValue];
                 NSCharacterSet *p = [NSCharacterSet characterSetWithCharactersInString:@"p"];
                 NSInteger slice = [[str stringByTrimmingCharactersInSet:p]integerValue];
-                
                 if (shot1Val == slice) {
                     timesHit += shot1Multi;
-                    [poi setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
+                    [p2Points setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
                     
                 }
                 if (shot2Val == slice){
                     timesHit += shot2Multi;
-                    [poi setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
+                    [p2Points setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
                     
                 }
                 if (shot3Val == slice){
                     timesHit += shot3Multi;
-                    [poi setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
-                    
+                    [p2Points setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
                 }
-                
             }
+            [self.players objectAtIndex:1].totalPts += [self getPlayerScore:[self.players objectAtIndex:1] with:p2Points againstOpponent:p1Points];
             [self.moc save:&error];
             if (error){
                 NSAssert(NO, @"Error saving context: %@\n%@", [error localizedDescription], [error userInfo]);
             }
         }else{
-            poi = (Points*)[fetchResultsPoints objectAtIndex:0];
-            poi.player = [self.players objectAtIndex:0];
-            NSEntityDescription *entity = [poi entity];
+            p1Points = (Points*)[fetchResultsPoints objectAtIndex:0];
+            p1Points.player = [self.players objectAtIndex:0];
+            NSEntityDescription *entity = [p1Points entity];
             NSDictionary *attributes = [entity attributesByName];
             NSError *error = nil;
             
             for (NSString *str in attributes) {
-                NSInteger timesHit = [[poi valueForKey:str]integerValue];
+                NSInteger timesHit = [[p1Points valueForKey:str]integerValue];
                 NSCharacterSet *p = [NSCharacterSet characterSetWithCharactersInString:@"p"];
                 NSInteger slice = [[str stringByTrimmingCharactersInSet:p]integerValue];
                 if (shot1Val == slice) {
                     timesHit += shot1Multi;
-                    [poi setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
+                    [p1Points setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
                 }
                 if (shot2Val == slice){
                     timesHit += shot2Multi;
-                    [poi setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
+                    [p1Points setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
                 }
                 if (shot3Val == slice){
                     timesHit += shot3Multi;
-                    [poi setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
+                    [p1Points setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
                 }
             }
+            [self.players objectAtIndex:0].totalPts += [self getPlayerScore:[self.players objectAtIndex:0] with:p1Points againstOpponent:p2Points];
+            
             if (![self.moc save:&error]) {
                 NSAssert(NO, @"Error saving context: %@\n%@", [error localizedDescription], [error userInfo]);
             }
         }
-        self.game.turnCounter ++;
+        
+        self.game.turnCounter++;
         [self turnProgression];
     }
     self.shotValues = nil;
-    if ([self checkIfGameIsComplete] == YES) {
-        UIAlertController * alert = [UIAlertController
-                                     alertControllerWithTitle:@"It's Over"
-                                     message:@"Game has ended"
-                                     preferredStyle:UIAlertControllerStyleAlert];
-        
-        UIAlertAction* yesButton = [UIAlertAction
-                                    actionWithTitle:@"Done"
-                                    style:UIAlertActionStyleDefault
-                                    handler:^(UIAlertAction * action) {
-                                        //Handle your yes please button action here
-                                        self.finshButton.hidden = NO;
-                                        self.finshButton.userInteractionEnabled = YES;
-                                        self.board.userInteractionEnabled = NO;
-                                    }];
-        [alert addAction:yesButton];
-        [self presentViewController:alert animated:YES completion:nil];
-    }
 }
 
--(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+#pragma mark - Update Player's score
+-(NSInteger)getPlayerScore:(Player*)player with:(Points*)points againstOpponent:(Points*)oppPoints
 {
-    if ([segue.identifier isEqualToString:@"detail"]) {
-        BoardDetailViewController *vc = segue.destinationViewController;
-        vc.delegate = self;
+    NSInteger currentScore = player.totalPts;
+    NSInteger increasedScore = 0;
+    NSEntityDescription *entity = [points entity];
+    NSDictionary *attributes = [entity attributesByName];
+    for (NSString *str in attributes) {
+        NSInteger timesHit = [[points valueForKey:str]integerValue];
+        NSCharacterSet *p = [NSCharacterSet characterSetWithCharactersInString:@"p"];
+        NSInteger slice = [[str stringByTrimmingCharactersInSet:p]integerValue];
+        if ([[oppPoints valueForKey:str]integerValue] < 3) {
+            if (timesHit > 3) {
+                increasedScore += (timesHit-3)*slice;
+            }
+        }
     }
+    currentScore += increasedScore;
+    return currentScore;
 }
 
 -(BOOL)checkIfGameIsComplete
@@ -222,26 +231,24 @@
     
     NSEntityDescription *p1Entity = [p1Points entity];
     NSDictionary *p1Attributes = [p1Entity attributesByName];
+    
     NSEntityDescription *p2Entity = [p2Points entity];
     NSDictionary *p2Attributes = [p2Entity attributesByName];
     
     NSInteger p1S = [self.players objectAtIndex:0].totalPts;
     NSInteger p2S = [self.players objectAtIndex:1].totalPts;
     
-    p1S = [self getPlayerScore:p1Points againstOpponent:p2Points];
-    p2S = [self getPlayerScore:p2Points againstOpponent:p1Points];
-    
     NSInteger p1Closed = 0;
     NSInteger p2Closed = 0;
     
     for (NSString *str in p1Attributes) {
-        NSInteger timesHit = [[p1Attributes valueForKey:str]integerValue];
+        NSInteger timesHit = [[p1Points valueForKey:str]integerValue];
         if (timesHit >= 3) {
             p1Closed++;
         }
     }
     for (NSString *str in p2Attributes) {
-        NSInteger timesHit = [[p2Attributes valueForKey:str]integerValue];
+        NSInteger timesHit = [[p2Points valueForKey:str]integerValue];
         if (timesHit >= 3) {
             p2Closed++;
         }
@@ -269,25 +276,19 @@
         [self.players objectAtIndex:0].gamesWon++;
         return YES;
     }
+    if (![self.moc save:&error]) {
+        NSAssert(NO, @"Error saving context: %@\n%@", [error localizedDescription], [error userInfo]);
+    }
     return NO;
 }
 
--(NSInteger)getPlayerScore:(Points*)points againstOpponent:(Points*)oppPoints
+
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    NSInteger increasedScore = 0;
-    NSEntityDescription *entity = [points entity];
-    NSDictionary *attributes = [entity attributesByName];
-    for (NSString *str in attributes) {
-        NSInteger timesHit = [[points valueForKey:str]integerValue];
-        NSCharacterSet *p = [NSCharacterSet characterSetWithCharactersInString:@"p"];
-        NSInteger slice = [[str stringByTrimmingCharactersInSet:p]integerValue];
-        if ([[oppPoints valueForKey:str]integerValue] < 3) {
-            if (timesHit > 3) {
-                increasedScore += (timesHit-3)*slice;
-            }
-        }
+    if ([segue.identifier isEqualToString:@"detail"]) {
+        BoardDetailViewController *vc = segue.destinationViewController;
+        vc.delegate = self;
     }
-    return increasedScore;
 }
 
 @end
