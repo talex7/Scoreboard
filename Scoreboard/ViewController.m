@@ -104,7 +104,6 @@
     if ([[self moc] save:&error] == NO) {
         NSAssert(NO, @"Error saving context: %@\n%@", [error localizedDescription], [error userInfo]);
     }
-    
     pVC.moc = self.moc;
     pVC.pageIndex = 0;
 }

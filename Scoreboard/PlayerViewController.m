@@ -123,7 +123,6 @@
                 }else if (shot3Val == slice){
                     timesHit += shot3Multi;
                     [poi setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
-                    
                 }
             }
             if ([self.moc save:&error]) {
