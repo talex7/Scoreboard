@@ -37,6 +37,10 @@
     [requestGames setPredicate:[NSPredicate predicateWithFormat:@"timeEnded = %@", date]];
 }
 
+-(void)viewWillAppear:(BOOL)animated
+{
+    [self.playerPicker reloadAllComponents];
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -78,18 +82,19 @@
             player.name = @"Player";
             player.points = [[NSOrderedSet alloc] initWithObjects:playerPoints, nil];
             [playerArray addObject:player];
-            
         }
-        
         if (fetchResultsPlayers.count < 2) {
             Player *player = [NSEntityDescription insertNewObjectForEntityForName:@"Player" inManagedObjectContext:self.moc];
             player.name = @"Opponent";
             player.points = [[NSOrderedSet alloc] initWithObjects:opponentPoints, nil];
             [playerArray addObject:player];
         }
-
-        
         game.player = (NSOrderedSet<Player*>*)[NSOrderedSet orderedSetWithArray:playerArray];
+        Player *player = fetchResultsPlayers[0];
+        Player *opponent = fetchResultsPlayers[1];
+
+        player.totalPts = 0;
+        opponent.totalPts = 0;
         
         if (fetchResultsGames.count > 0) {
             Game *game = fetchResultsGames.firstObject;
@@ -98,6 +103,7 @@
             [self.moc deleteObject:[points objectAtIndex:0]];
             [self.moc deleteObject:[points objectAtIndex:1]];
         }
+        
     }
     
     if (![[self moc] save:&error]) {

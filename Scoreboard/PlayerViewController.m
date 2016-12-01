@@ -187,7 +187,6 @@
                 }
             }
             [self.players objectAtIndex:0].totalPts += [self getPlayerScore:[self.players objectAtIndex:0] with:p1Points againstOpponent:p2Points];
-            
             if (![self.moc save:&error]) {
                 NSAssert(NO, @"Error saving context: %@\n%@", [error localizedDescription], [error userInfo]);
             }
@@ -216,12 +215,13 @@
             }
         }
     }
-    currentScore += increasedScore;
-    return currentScore;
+    NSInteger final = increasedScore;
+    return final;
 }
 
 -(BOOL)checkIfGameIsComplete
 {
+    BOOL ended = NO;
     NSError *error = nil;
     NSFetchRequest *pointsRequest = [NSFetchRequest fetchRequestWithEntityName:@"Points"];
     NSArray *fetchResultsPoints = [self.moc executeFetchRequest:pointsRequest error:&error];
@@ -254,7 +254,7 @@
         }
     }
     
-    if (p1Closed >= 7 && p2Closed >= 7) {
+    if (p1Closed == 7 && p2Closed >= 7) {
         if (p1S > p2S) {
             self.game.timeEnded = [NSDate date];
             [self.players objectAtIndex:0].gamesWon++;
@@ -264,22 +264,22 @@
         }else{
             self.game.timeEnded = [NSDate date];
         }
-        return YES;
+        ended = YES;
     }
-    if (p1Closed > 7 && p1S > p2S) {
+    if (p1Closed == 7 && p1S > p2S) {
         self.game.timeEnded = [NSDate date];
         [self.players objectAtIndex:0].gamesWon++;
-        return YES;
+        ended = YES;
     }
-    if (p2Closed > 7 && p1S < p2S) {
+    if (p2Closed == 7 && p1S < p2S) {
         self.game.timeEnded = [NSDate date];
         [self.players objectAtIndex:0].gamesWon++;
-        return YES;
+        ended = YES;
     }
     if (![self.moc save:&error]) {
         NSAssert(NO, @"Error saving context: %@\n%@", [error localizedDescription], [error userInfo]);
     }
-    return NO;
+    return ended;
 }
 
 
