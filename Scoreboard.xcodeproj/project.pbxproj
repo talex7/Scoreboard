@@ -43,6 +43,7 @@
 		950349981DECB4B300C54098 /* GameSummaryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameSummaryViewController.m; sourceTree = "<group>"; };
 		9503499B1DECD38200C54098 /* BoardDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BoardDetailViewController.h; sourceTree = "<group>"; };
 		9503499C1DECD38300C54098 /* BoardDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BoardDetailViewController.m; sourceTree = "<group>"; };
+		952302571DF0A2C000AE1DB1 /* Scoreboard 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Scoreboard 2.xcdatamodel"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -137,6 +138,7 @@
 				TargetAttributes = {
 					747B90AC1DEBAF05001D5A9D = {
 						CreatedOnToolsVersion = 8.1;
+						DevelopmentTeam = G3KYTESUM8;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -305,7 +307,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = G3KYTESUM8;
 				INFOPLIST_FILE = Scoreboard/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = mt.Scoreboard;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -316,7 +320,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = G3KYTESUM8;
 				INFOPLIST_FILE = Scoreboard/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = mt.Scoreboard;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -350,9 +356,10 @@
 		747B90BC1DEBAF05001D5A9D /* Scoreboard.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				952302571DF0A2C000AE1DB1 /* Scoreboard 2.xcdatamodel */,
 				747B90BD1DEBAF05001D5A9D /* Scoreboard.xcdatamodel */,
 			);
-			currentVersion = 747B90BD1DEBAF05001D5A9D /* Scoreboard.xcdatamodel */;
+			currentVersion = 952302571DF0A2C000AE1DB1 /* Scoreboard 2.xcdatamodel */;
 			path = Scoreboard.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
