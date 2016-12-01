@@ -16,6 +16,7 @@
 		747B90C01DEBAF05001D5A9D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 747B90BF1DEBAF05001D5A9D /* Assets.xcassets */; };
 		747B90C31DEBAF05001D5A9D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 747B90C11DEBAF05001D5A9D /* LaunchScreen.storyboard */; };
 		747B90CC1DEC9D00001D5A9D /* GameManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 747B90CB1DEC9D00001D5A9D /* GameManager.m */; };
+		74F532621DF0A50C005AB493 /* Scoreboard.xcdatamodeld in Resources */ = {isa = PBXBuildFile; fileRef = 747B90BC1DEBAF05001D5A9D /* Scoreboard.xcdatamodeld */; };
 		950349931DECB34F00C54098 /* PageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 950349921DECB34F00C54098 /* PageViewController.m */; };
 		950349961DECB4A800C54098 /* PlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 950349951DECB4A800C54098 /* PlayerViewController.m */; };
 		950349991DECB4B300C54098 /* GameSummaryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 950349981DECB4B300C54098 /* GameSummaryViewController.m */; };
@@ -138,7 +139,7 @@
 				TargetAttributes = {
 					747B90AC1DEBAF05001D5A9D = {
 						CreatedOnToolsVersion = 8.1;
-						DevelopmentTeam = G3KYTESUM8;
+						DevelopmentTeam = E44M545Q67;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -166,6 +167,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				74F532621DF0A50C005AB493 /* Scoreboard.xcdatamodeld in Resources */,
 				747B90C31DEBAF05001D5A9D /* LaunchScreen.storyboard in Resources */,
 				747B90C01DEBAF05001D5A9D /* Assets.xcassets in Resources */,
 				747B90BB1DEBAF05001D5A9D /* Main.storyboard in Resources */,
@@ -307,11 +309,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = G3KYTESUM8;
+				DEVELOPMENT_TEAM = E44M545Q67;
 				INFOPLIST_FILE = Scoreboard/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = mt.Scoreboard;
+				PRODUCT_BUNDLE_IDENTIFIER = ta.Scoreboard;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -320,11 +322,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = G3KYTESUM8;
+				DEVELOPMENT_TEAM = E44M545Q67;
 				INFOPLIST_FILE = Scoreboard/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = mt.Scoreboard;
+				PRODUCT_BUNDLE_IDENTIFIER = ta.Scoreboard;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

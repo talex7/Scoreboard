@@ -30,7 +30,7 @@
     self.playerPicker.delegate = self;
     
     AppDelegate *appDelegate = (AppDelegate*)([[UIApplication sharedApplication] delegate]);
-    self.moc = appDelegate.persistentContainer.viewContext;
+    self.moc = appDelegate.managedObjectContext;
     
     NSFetchRequest *requestGames = [NSFetchRequest fetchRequestWithEntityName:@"Game"];
     NSDate *date;

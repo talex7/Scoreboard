@@ -25,7 +25,7 @@
     self.finshButton.userInteractionEnabled = NO;
     
     AppDelegate *appDelegate = (AppDelegate*)([[UIApplication sharedApplication] delegate]);
-    self.moc = appDelegate.persistentContainer.viewContext;
+    self.moc = appDelegate.managedObjectContext;
     
     NSError *error = nil;
     NSFetchRequest *gameRequest = [NSFetchRequest fetchRequestWithEntityName:@"Game"];
