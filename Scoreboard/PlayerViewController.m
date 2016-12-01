@@ -114,18 +114,26 @@
                 NSInteger timesHit = [[poi valueForKey:str]integerValue];
                 NSCharacterSet *p = [NSCharacterSet characterSetWithCharactersInString:@"p"];
                 NSInteger slice = [[str stringByTrimmingCharactersInSet:p]integerValue];
+                
                 if (shot1Val == slice) {
                     timesHit += shot1Multi;
                     [poi setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
-                }else if (shot2Val == slice){
+                    
+                }
+                if (shot2Val == slice){
                     timesHit += shot2Multi;
                     [poi setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
-                }else if (shot3Val == slice){
+                    
+                }
+                if (shot3Val == slice){
                     timesHit += shot3Multi;
                     [poi setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
+                    
                 }
+                
             }
-            if ([self.moc save:&error]) {
+            [self.moc save:&error];
+            if (error){
                 NSAssert(NO, @"Error saving context: %@\n%@", [error localizedDescription], [error userInfo]);
             }
         }else{

@@ -49,8 +49,8 @@
     
     [self scoreFinder:p1Points in:self.p1ScoreImages];
     [self scoreFinder:p2Points in:self.p2ScoreImages];
-    [self getPlayerScore:self.p1Label andPoints:p1Points];
-    [self getPlayerScore:self.p2Label andPoints:p2Points];
+    [self getPlayerScore:self.p1ScoreLabel andPoints:p1Points];
+    [self getPlayerScore:self.p2ScoreLabel andPoints:p2Points];
 }
 
 
