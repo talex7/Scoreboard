@@ -50,8 +50,8 @@
     [self scoreFinder:p1Points in:self.p1ScoreImages];
     [self scoreFinder:p2Points in:self.p2ScoreImages];
     
-    [self getPlayerScore:self.p1ScoreLabel andPoints:p1Points];
-    [self getPlayerScore:self.p2ScoreLabel andPoints:p2Points];
+    [self getPlayerScore:self.p1ScoreLabel andPoints:p1Points againstOpponent:p2Points];
+    [self getPlayerScore:self.p2ScoreLabel andPoints:p2Points againstOpponent:p1Points];
 }
 
 
@@ -70,7 +70,7 @@
 }
 
 // sets Score Label for respective Player
--(void)getPlayerScore:(UILabel*)score andPoints:(Points*)points
+-(void)getPlayerScore:(UILabel*)score andPoints:(Points*)points againstOpponent:(Points*)oppPoints
 {
     NSInteger currentScore = [score.text integerValue];
     NSInteger increasedScore = 0;
@@ -80,8 +80,12 @@
         NSInteger timesHit = [[points valueForKey:str]integerValue];
         NSCharacterSet *p = [NSCharacterSet characterSetWithCharactersInString:@"p"];
         NSInteger slice = [[str stringByTrimmingCharactersInSet:p]integerValue];
-        if (timesHit > 3) {
-            increasedScore += (timesHit-3)*slice;
+        
+        
+        if ([[oppPoints valueForKey:str]integerValue] < 3) {
+            if (timesHit > 3) {
+                increasedScore += (timesHit-3)*slice;
+            }
         }
     }
     currentScore = increasedScore;
