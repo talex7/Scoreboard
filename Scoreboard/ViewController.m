@@ -63,7 +63,7 @@
     NSArray *fetchResultsPlayers = [self.moc executeFetchRequest:requestPlayers error:&error];
     NSArray *fetchResultsGames = [self.moc executeFetchRequest:requestGames error:&error];
     
-    NSMutableArray <Player *>*playerArray = [NSMutableArray new];
+    NSMutableArray <Player *> *playerArray = [NSMutableArray new];
     
     if (gameType == 0)
     {
@@ -72,9 +72,6 @@
         Points *opponentPoints = [NSEntityDescription insertNewObjectForEntityForName:@"Points" inManagedObjectContext:self.moc];
         game.points = [[NSOrderedSet alloc] initWithObjects:playerPoints, opponentPoints, nil];
         game.timeStarted = [NSDate date];
-        pVC.game = game;
-    
-//        NSOrderedSet *pointsSet = [[NSOrderedSet alloc] initWithObjects:playerPoints, opponentPoints, nil];
         
         if (fetchResultsPlayers.count < 1) {
             Player *player = [NSEntityDescription insertNewObjectForEntityForName:@"Player" inManagedObjectContext:self.moc];
@@ -82,8 +79,6 @@
             player.points = [[NSOrderedSet alloc] initWithObjects:playerPoints, nil];
             [playerArray addObject:player];
             
-        } else {
-            [playerArray addObject:fetchResultsPlayers[0]];
         }
         
         if (fetchResultsPlayers.count < 2) {
@@ -91,14 +86,10 @@
             player.name = @"Opponent";
             player.points = [[NSOrderedSet alloc] initWithObjects:opponentPoints, nil];
             [playerArray addObject:player];
-            
-        } else {
-            [playerArray addObject:fetchResultsPlayers[1]];
         }
+
         
         game.player = (NSOrderedSet<Player*>*)[NSOrderedSet orderedSetWithArray:playerArray];
-        
-        pVC.game = game;
         
         if (fetchResultsGames.count > 0) {
             Game *game = fetchResultsGames.firstObject;
@@ -109,23 +100,11 @@
         }
     }
     
-    
-    if (gameType == 1) {
-        
-            NSArray *fetchResults = [self.moc executeFetchRequest:requestGames error:&error];
-            pVC.game = [fetchResults lastObject];
-            
-            playerArray  = (NSMutableArray*)pVC.game.player.array;
-        
-    }
-
-    
-    pVC.players = playerArray;
-    
-    
     if ([[self moc] save:&error] == NO) {
         NSAssert(NO, @"Error saving context: %@\n%@", [error localizedDescription], [error userInfo]);
     }
+    
+    pVC.moc = self.moc;
     pVC.pageIndex = 0;
 }
 

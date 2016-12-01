@@ -13,16 +13,15 @@
 
 @protocol Pages <NSObject>
 @property (nonatomic) NSInteger pageIndex;
-@property (nonatomic) NSArray *players;
-@property (nonatomic) Game *game;
+@property (nonatomic) NSManagedObjectContext *moc;
 @end
 
 
 @interface PageViewController : UIPageViewController <UIPageViewControllerDataSource>
 
-@property (nonatomic) Game *game;
+
 @property (nonatomic) NSInteger pageIndex;
-@property (nonatomic) NSArray *players;
+@property (nonatomic) NSManagedObjectContext *moc;
 @property (nonatomic) PlayerViewController *playerViewController;
 @property (nonatomic) GameSummaryViewController *gameSummary;
 @property (strong, nonatomic) NSMutableArray<UIViewController*> *viewCs;

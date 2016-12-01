@@ -47,6 +47,9 @@
         PlayerViewController *playerView = [self.storyboard instantiateViewControllerWithIdentifier:@"BoardController"];
         playerView.pageIndex = index;
         playerView.players = self.players;
+        
+        playerView.game = self.game;
+        
         return playerView;
     }else{
         GameSummaryViewController *gameSummary = [self.storyboard instantiateViewControllerWithIdentifier:@"GameSummary"];
