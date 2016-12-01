@@ -101,7 +101,7 @@
         }
     }
     
-    if ([[self moc] save:&error] == NO) {
+    if (![[self moc] save:&error]) {
         NSAssert(NO, @"Error saving context: %@\n%@", [error localizedDescription], [error userInfo]);
     }
     pVC.moc = self.moc;
