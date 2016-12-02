@@ -15,7 +15,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *p2ScoreLabel;
 @property (weak, nonatomic) IBOutlet UILabel *p1Label;
 @property (weak, nonatomic) IBOutlet UILabel *p2Label;
-
+@property (nonatomic) Game *game;
 @end
 
 @implementation GameSummaryViewController
@@ -27,11 +27,18 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     NSError *error = nil;
+    NSFetchRequest *gameRequest = [NSFetchRequest fetchRequestWithEntityName:@"Game"];
     NSFetchRequest *pointsRequest = [NSFetchRequest fetchRequestWithEntityName:@"Points"];
     NSFetchRequest *playerRequest = [NSFetchRequest fetchRequestWithEntityName:@"Player"];
+    NSDate *date;
+    [gameRequest setPredicate:[NSPredicate predicateWithFormat:@"timeEnded = %@", date]];
     
     NSArray *fetchResultsPoints = [self.moc executeFetchRequest:pointsRequest error:&error];
     NSArray *fetchResultsPlayer = [self.moc executeFetchRequest:playerRequest error:&error];
+    NSArray *fetchRequestGames = [self.moc executeFetchRequest:gameRequest error:&error];
+    
+    Game *g = [fetchRequestGames objectAtIndex:[fetchRequestGames count]-1];
+    self.game = g;
     
     Player *p1 = [fetchResultsPlayer objectAtIndex:[fetchResultsPlayer count]-2];
     Player *p2 = [fetchResultsPlayer objectAtIndex:[fetchResultsPlayer count]-1];
@@ -45,8 +52,8 @@
     [self scoreFinder:p1Points in:self.p1ScoreImages];
     [self scoreFinder:p2Points in:self.p2ScoreImages];
     
-    self.p1ScoreLabel.text = [NSString stringWithFormat:@"%d", p1.totalPts];
-    self.p2ScoreLabel.text = [NSString stringWithFormat:@"%d", p2.totalPts];
+    self.p1ScoreLabel.text = [NSString stringWithFormat:@"%d", self.game.p1Pts];
+    self.p2ScoreLabel.text = [NSString stringWithFormat:@"%d", self.game.p2Pts];
     
 }
 

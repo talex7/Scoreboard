@@ -15,6 +15,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *currentPlayerLabel;
 @property (weak, nonatomic) IBOutlet UIButton *board;
 @property Game *game;
+@property (nonatomic) NSMutableDictionary *p1TimesHit;
+@property (nonatomic) NSMutableDictionary *p2TimesHit;
 @end
 
 @implementation PlayerViewController
@@ -26,6 +28,11 @@
     self.finshButton.hidden = YES;
     self.finshButton.userInteractionEnabled = NO;
     self.board.userInteractionEnabled = YES;
+    
+    NSArray *slices = @[@"p20", @"p19", @"p18", @"p17", @"p16", @"p15", @"p25"];
+    NSArray *values = @[@0, @0, @0, @0, @0, @0, @0];
+    self.p1TimesHit = [[NSMutableDictionary alloc]initWithObjects:values forKeys:slices];
+    self.p2TimesHit = [[NSMutableDictionary alloc]initWithObjects:values forKeys:slices];
     
     AppDelegate *appDelegate = (AppDelegate*)([[UIApplication sharedApplication] delegate]);
     self.moc = appDelegate.managedObjectContext;
@@ -167,19 +174,21 @@
                 if (shot1Val == slice) {
                     timesHit += shot1Multi;
                     [p2Points setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
-                    
+                    [self.p2TimesHit setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
                 }
                 if (shot2Val == slice){
                     timesHit += shot2Multi;
                     [p2Points setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
                     
+                    [self.p2TimesHit setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
                 }
                 if (shot3Val == slice){
                     timesHit += shot3Multi;
                     [p2Points setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
+                    [self.p2TimesHit setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
                 }
             }
-            [self.players objectAtIndex:1].totalPts += [self getPlayerScore:[self.players objectAtIndex:1] with:p2Points againstOpponent:p1Points];
+            self.game.p2Pts += [self getPlayerScore:[self.players objectAtIndex:1] with:p2Points againstOpponent:p1Points];
             [self.moc save:&error];
             if (error){
                 NSAssert(NO, @"Error saving context: %@\n%@", [error localizedDescription], [error userInfo]);
@@ -198,17 +207,20 @@
                 if (shot1Val == slice) {
                     timesHit += shot1Multi;
                     [p1Points setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
+                    [self.p1TimesHit setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
                 }
                 if (shot2Val == slice){
                     timesHit += shot2Multi;
                     [p1Points setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
+                    [self.p1TimesHit setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
                 }
                 if (shot3Val == slice){
                     timesHit += shot3Multi;
                     [p1Points setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
+                    [self.p1TimesHit setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
                 }
             }
-            [self.players objectAtIndex:0].totalPts += [self getPlayerScore:[self.players objectAtIndex:0] with:p1Points againstOpponent:p2Points];
+            self.game.p1Pts += [self getPlayerScore:[self.players objectAtIndex:0] with:p1Points againstOpponent:p2Points];
             if (![self.moc save:&error]) {
                 NSAssert(NO, @"Error saving context: %@\n%@", [error localizedDescription], [error userInfo]);
             }
@@ -226,12 +238,25 @@
     NSEntityDescription *entity = [points entity];
     NSDictionary *attributes = [entity attributesByName];
     for (NSString *str in attributes) {
+        
+        // get previous Hits from dictionary
+        
+        NSInteger previousHits;
+        if ([player.name isEqualToString:@"Player"]) {
+            previousHits = [[self.p1TimesHit valueForKey:str]integerValue];
+        }else{
+            previousHits = [[self.p2TimesHit valueForKey:str]integerValue];
+        }
+        
         NSInteger timesHit = [[points valueForKey:str]integerValue];
         NSCharacterSet *p = [NSCharacterSet characterSetWithCharactersInString:@"p"];
         NSInteger slice = [[str stringByTrimmingCharactersInSet:p]integerValue];
         if ([[oppPoints valueForKey:str]integerValue] < 3) {
             if (timesHit > 3) {
-                increasedScore += (timesHit-3)*slice;
+                increasedScore += ((timesHit-3)-previousHits)*slice;
+                if (increasedScore < 0) {
+                    increasedScore = 0;
+                }
             }
         }
     }
@@ -273,18 +298,19 @@
         }
     }
     
-    if (p1Closed == 7 && p2Closed >= 7) {
-        if (p1S > p2S) {
-            self.game.timeEnded = [NSDate date];
-            [self.players objectAtIndex:0].gamesWon++;
-        }else if (p1S < p2S){
-            self.game.timeEnded = [NSDate date];
-            [self.players objectAtIndex:1].gamesWon++;
-        }else{
-            self.game.timeEnded = [NSDate date];
-        }
-        ended = YES;
-    }
+//    if (p1Closed == 7 && p2Closed >= 7) {
+//        if (p1S > p2S) {
+//            self.game.timeEnded = [NSDate date];
+//            [self.players objectAtIndex:0].gamesWon++;
+//        }else if (p1S < p2S){
+//            self.game.timeEnded = [NSDate date];
+//            [self.players objectAtIndex:1].gamesWon++;
+//        }else{
+//            self.game.timeEnded = [NSDate date];
+//        }
+//        ended = YES;
+//    }
+    
     if (p1Closed == 7 && p1S > p2S) {
         self.game.timeEnded = [NSDate date];
         [self.players objectAtIndex:0].gamesWon++;
