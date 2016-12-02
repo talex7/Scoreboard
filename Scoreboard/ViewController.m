@@ -66,54 +66,59 @@
     NSArray *fetchResultsPlayers = [self.moc executeFetchRequest:requestPlayers error:&error];
     NSArray *fetchResultsGames = [self.moc executeFetchRequest:requestGames error:&error];
     
+    
     NSMutableArray <Player *> *playerArray = [NSMutableArray new];
     
     if (gameType == 0)
     {
         Game *game = [NSEntityDescription insertNewObjectForEntityForName:@"Game" inManagedObjectContext:self.moc];
+        
         Points *playerPoints = [NSEntityDescription insertNewObjectForEntityForName:@"Points" inManagedObjectContext:self.moc];
         Points *opponentPoints = [NSEntityDescription insertNewObjectForEntityForName:@"Points" inManagedObjectContext:self.moc];
+        
         game.points = [[NSOrderedSet alloc] initWithObjects:playerPoints, opponentPoints, nil];
         game.timeStarted = [NSDate date];
         game.turnCounter = 1;
         
+        if (fetchResultsPlayers.count >0) {
+            for (Player *p in fetchResultsPlayers) {
+                p.totalPts = 0;
+            }
+        }
+        
         if (fetchResultsPlayers.count < 1) {
             Player *player = [NSEntityDescription insertNewObjectForEntityForName:@"Player" inManagedObjectContext:self.moc];
             player.name = @"Player";
+            player.totalPts = 0;
             player.points = [[NSOrderedSet alloc] initWithObjects:playerPoints, nil];
             [playerArray addObject:player];
         }
         if (fetchResultsPlayers.count < 2) {
             Player *player = [NSEntityDescription insertNewObjectForEntityForName:@"Player" inManagedObjectContext:self.moc];
             player.name = @"Opponent";
+            player.totalPts = 0;
             player.points = [[NSOrderedSet alloc] initWithObjects:opponentPoints, nil];
             [playerArray addObject:player];
         }
+        
+        
         game.player = (NSOrderedSet<Player*>*)[NSOrderedSet orderedSetWithArray:playerArray];
-        Player *player = fetchResultsPlayers[0];
-        Player *opponent = fetchResultsPlayers[1];
-
-        player.totalPts = 0;
-        opponent.totalPts = 0;
         
         if (fetchResultsGames.count > 0) {
-            Game *game = fetchResultsGames.firstObject;
+            Game *game = [fetchResultsGames firstObject];
             NSOrderedSet *points = game.points;
             [self.moc deleteObject:game];
             [self.moc deleteObject:[points objectAtIndex:0]];
             [self.moc deleteObject:[points objectAtIndex:1]];
         }
-        
     }
     
-    if (![[self moc] save:&error]) {
+    if (![self.moc save:&error]) {
         NSAssert(NO, @"Error saving context: %@\n%@", [error localizedDescription], [error userInfo]);
     }
     pVC.moc = self.moc;
     pVC.pageIndex = 0;
 }
-
-
 
 #pragma mark - PickerView
 
@@ -128,7 +133,6 @@
     switch (row) {
         case 0:
             rowLabel = @"New Game";
-            
             return rowLabel;
         case 1:
             rowLabel = @"Continue";

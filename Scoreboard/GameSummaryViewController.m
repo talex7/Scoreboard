@@ -16,7 +16,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *p1Label;
 @property (weak, nonatomic) IBOutlet UILabel *p2Label;
 
-
 @end
 
 @implementation GameSummaryViewController
@@ -38,14 +37,14 @@
     NSArray *fetchResultsPoints = [self.moc executeFetchRequest:pointsRequest error:&error];
     NSArray *fetchResultsPlayer = [self.moc executeFetchRequest:playerRequest error:&error];
     
-    Player *p1 = [fetchResultsPlayer objectAtIndex:0];
-    Player *p2 = [fetchResultsPlayer objectAtIndex:1];
+    Player *p1 = [fetchResultsPlayer objectAtIndex:[fetchResultsPlayer count]-2];
+    Player *p2 = [fetchResultsPlayer objectAtIndex:[fetchResultsPlayer count]-1];
     
     self.p1Label.text = p1.name;
     self.p2Label.text = p2.name;
     
-    Points *p1Points = [fetchResultsPoints objectAtIndex:0];
-    Points *p2Points = [fetchResultsPoints objectAtIndex:1];
+    Points *p1Points = [fetchResultsPoints objectAtIndex:[fetchResultsPoints count]-2];
+    Points *p2Points = [fetchResultsPoints objectAtIndex:[fetchResultsPoints count]-1];
     
     [self scoreFinder:p1Points in:self.p1ScoreImages];
     [self scoreFinder:p2Points in:self.p2ScoreImages];
@@ -62,7 +61,6 @@
 {
     NSEntityDescription *entity = [points entity];
     NSDictionary *attributes = [entity attributesByName];
-    
     for (NSString *str in attributes) {
         NSInteger timesHit = [[points valueForKey:str]integerValue];
         NSCharacterSet *p = [NSCharacterSet characterSetWithCharactersInString:@"p"];

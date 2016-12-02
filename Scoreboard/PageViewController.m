@@ -12,6 +12,7 @@
 
 @interface PageViewController ()
 @property Game *game;
+@property (nonatomic) BOOL newGame;
 @end
 
 @implementation PageViewController
@@ -33,8 +34,12 @@
     [gameRequest setPredicate:[NSPredicate predicateWithFormat:@"timeEnded = %@", date]];
     NSArray *fetchResultsGames = [self.moc executeFetchRequest:gameRequest error:&error];
     
-    Game *g = [fetchResultsGames objectAtIndex:0];
+    Game *g = [fetchResultsGames lastObject];
     self.game = g;
+    
+    if (self.game.turnCounter == 1) {
+        self.newGame = YES;
+    }
     
     [self.viewCs addObject:board];
     
@@ -57,6 +62,7 @@
         return nil;
     }else if (index == 0){
         PlayerViewController *playerView = [self.storyboard instantiateViewControllerWithIdentifier:@"BoardController"];
+        playerView.newGame = self.newGame;
         playerView.pageIndex = index;
         playerView.moc = self.moc;
         return playerView;

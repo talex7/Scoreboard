@@ -21,6 +21,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.players = [NSMutableArray new];
     
     self.finshButton.hidden = YES;
     self.finshButton.userInteractionEnabled = NO;
@@ -37,10 +38,11 @@
     NSArray *fetchResultsGames = [self.moc executeFetchRequest:gameRequest error:&error];
     NSArray *fetchResultsPlayer = [self.moc executeFetchRequest:playerRequest error:&error];
     
-    Game *g = [fetchResultsGames objectAtIndex:0];
+    Game *g = [fetchResultsGames lastObject];
     self.game = g;
-    self.players = fetchResultsPlayer;
-
+    
+    [self.players addObject:[fetchResultsPlayer objectAtIndex:0]];
+    [self.players addObject:[fetchResultsPlayer objectAtIndex:1]];
     
     if (self.game.turnCounter == 1) {
         UIAlertController * alert = [UIAlertController
@@ -132,66 +134,130 @@
         NSError *error = nil;
         NSFetchRequest *pointsRequest = [NSFetchRequest fetchRequestWithEntityName:@"Points"];
         NSArray *fetchResultsPoints = [self.moc executeFetchRequest:pointsRequest error:&error];
-        Points *p1Points = [fetchResultsPoints objectAtIndex:0];
-        Points *p2Points = [fetchResultsPoints objectAtIndex:1];
-        if (self.game.turnCounter % 2 == 0) {
-            NSEntityDescription *entity = [p2Points entity];
-            NSDictionary *attributes = [entity attributesByName];
-            NSError *error = nil;
-            for (NSString *str in attributes) {
-                NSInteger timesHit = [[p2Points valueForKey:str]integerValue];
-                NSCharacterSet *p = [NSCharacterSet characterSetWithCharactersInString:@"p"];
-                NSInteger slice = [[str stringByTrimmingCharactersInSet:p]integerValue];
-                if (shot1Val == slice) {
-                    timesHit += shot1Multi;
-                    [p2Points setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
-                    
+        
+        Points *p1Points = [fetchResultsPoints objectAtIndex:[fetchResultsPoints count]-2];
+        Points *p2Points = [fetchResultsPoints objectAtIndex:[fetchResultsPoints count]-1];
+        
+        if (self.newGame == YES) {
+            if (self.game.turnCounter % 2 == 0) {
+                NSEntityDescription *entity = [p2Points entity];
+                NSDictionary *attributes = [entity attributesByName];
+                NSError *error = nil;
+                for (NSString *str in attributes) {
+                    NSInteger timesHit = [[p2Points valueForKey:str]integerValue];
+                    timesHit = 0;
+                    NSCharacterSet *p = [NSCharacterSet characterSetWithCharactersInString:@"p"];
+                    NSInteger slice = [[str stringByTrimmingCharactersInSet:p]integerValue];
+                    if (shot1Val == slice) {
+                        timesHit += shot1Multi;
+                        [p2Points setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
+                        
+                    }
+                    if (shot2Val == slice){
+                        timesHit += shot2Multi;
+                        [p2Points setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
+                        
+                    }
+                    if (shot3Val == slice){
+                        timesHit += shot3Multi;
+                        [p2Points setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
+                    }
                 }
-                if (shot2Val == slice){
-                    timesHit += shot2Multi;
-                    [p2Points setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
-                    
+                [self.players objectAtIndex:1].totalPts += [self getPlayerScore:[self.players objectAtIndex:1] with:p2Points againstOpponent:p1Points];
+                [self.moc save:&error];
+                if (error){
+                    NSAssert(NO, @"Error saving context: %@\n%@", [error localizedDescription], [error userInfo]);
                 }
-                if (shot3Val == slice){
-                    timesHit += shot3Multi;
-                    [p2Points setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
+            }else{
+                p1Points = (Points*)[fetchResultsPoints objectAtIndex:0];
+                p1Points.player = [self.players objectAtIndex:0];
+                NSEntityDescription *entity = [p1Points entity];
+                NSDictionary *attributes = [entity attributesByName];
+                NSError *error = nil;
+                
+                for (NSString *str in attributes) {
+                    NSInteger timesHit = [[p1Points valueForKey:str]integerValue];
+                    timesHit = 0;
+                    NSCharacterSet *p = [NSCharacterSet characterSetWithCharactersInString:@"p"];
+                    NSInteger slice = [[str stringByTrimmingCharactersInSet:p]integerValue];
+                    if (shot1Val == slice) {
+                        timesHit += shot1Multi;
+                        [p1Points setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
+                    }
+                    if (shot2Val == slice){
+                        timesHit += shot2Multi;
+                        [p1Points setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
+                    }
+                    if (shot3Val == slice){
+                        timesHit += shot3Multi;
+                        [p1Points setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
+                    }
+                }
+                [self.players objectAtIndex:0].totalPts += [self getPlayerScore:[self.players objectAtIndex:0] with:p1Points againstOpponent:p2Points];
+                if (![self.moc save:&error]) {
+                    NSAssert(NO, @"Error saving context: %@\n%@", [error localizedDescription], [error userInfo]);
                 }
             }
-            [self.players objectAtIndex:1].totalPts += [self getPlayerScore:[self.players objectAtIndex:1] with:p2Points againstOpponent:p1Points];
-            [self.moc save:&error];
-            if (error){
-                NSAssert(NO, @"Error saving context: %@\n%@", [error localizedDescription], [error userInfo]);
-            }
+            self.newGame = NO;
         }else{
-            p1Points = (Points*)[fetchResultsPoints objectAtIndex:0];
-            p1Points.player = [self.players objectAtIndex:0];
-            NSEntityDescription *entity = [p1Points entity];
-            NSDictionary *attributes = [entity attributesByName];
-            NSError *error = nil;
-            
-            for (NSString *str in attributes) {
-                NSInteger timesHit = [[p1Points valueForKey:str]integerValue];
-                NSCharacterSet *p = [NSCharacterSet characterSetWithCharactersInString:@"p"];
-                NSInteger slice = [[str stringByTrimmingCharactersInSet:p]integerValue];
-                if (shot1Val == slice) {
-                    timesHit += shot1Multi;
-                    [p1Points setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
+            if (self.game.turnCounter % 2 == 0) {
+                NSEntityDescription *entity = [p2Points entity];
+                NSDictionary *attributes = [entity attributesByName];
+                NSError *error = nil;
+                for (NSString *str in attributes) {
+                    NSInteger timesHit = [[p2Points valueForKey:str]integerValue];
+                    NSCharacterSet *p = [NSCharacterSet characterSetWithCharactersInString:@"p"];
+                    NSInteger slice = [[str stringByTrimmingCharactersInSet:p]integerValue];
+                    if (shot1Val == slice) {
+                        timesHit += shot1Multi;
+                        [p2Points setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
+                        
+                    }
+                    if (shot2Val == slice){
+                        timesHit += shot2Multi;
+                        [p2Points setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
+                        
+                    }
+                    if (shot3Val == slice){
+                        timesHit += shot3Multi;
+                        [p2Points setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
+                    }
                 }
-                if (shot2Val == slice){
-                    timesHit += shot2Multi;
-                    [p1Points setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
+                [self.players objectAtIndex:1].totalPts += [self getPlayerScore:[self.players objectAtIndex:1] with:p2Points againstOpponent:p1Points];
+                [self.moc save:&error];
+                if (error){
+                    NSAssert(NO, @"Error saving context: %@\n%@", [error localizedDescription], [error userInfo]);
                 }
-                if (shot3Val == slice){
-                    timesHit += shot3Multi;
-                    [p1Points setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
+            }else{
+                p1Points = (Points*)[fetchResultsPoints objectAtIndex:0];
+                p1Points.player = [self.players objectAtIndex:0];
+                NSEntityDescription *entity = [p1Points entity];
+                NSDictionary *attributes = [entity attributesByName];
+                NSError *error = nil;
+                
+                for (NSString *str in attributes) {
+                    NSInteger timesHit = [[p1Points valueForKey:str]integerValue];
+                    NSCharacterSet *p = [NSCharacterSet characterSetWithCharactersInString:@"p"];
+                    NSInteger slice = [[str stringByTrimmingCharactersInSet:p]integerValue];
+                    if (shot1Val == slice) {
+                        timesHit += shot1Multi;
+                        [p1Points setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
+                    }
+                    if (shot2Val == slice){
+                        timesHit += shot2Multi;
+                        [p1Points setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
+                    }
+                    if (shot3Val == slice){
+                        timesHit += shot3Multi;
+                        [p1Points setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
+                    }
                 }
-            }
-            [self.players objectAtIndex:0].totalPts += [self getPlayerScore:[self.players objectAtIndex:0] with:p1Points againstOpponent:p2Points];
-            if (![self.moc save:&error]) {
-                NSAssert(NO, @"Error saving context: %@\n%@", [error localizedDescription], [error userInfo]);
+                [self.players objectAtIndex:0].totalPts += [self getPlayerScore:[self.players objectAtIndex:0] with:p1Points againstOpponent:p2Points];
+                if (![self.moc save:&error]) {
+                    NSAssert(NO, @"Error saving context: %@\n%@", [error localizedDescription], [error userInfo]);
+                }
             }
         }
-        
         self.game.turnCounter++;
         [self turnProgression];
     }
@@ -201,7 +267,6 @@
 #pragma mark - Update Player's score
 -(NSInteger)getPlayerScore:(Player*)player with:(Points*)points againstOpponent:(Points*)oppPoints
 {
-    NSInteger currentScore = player.totalPts;
     NSInteger increasedScore = 0;
     NSEntityDescription *entity = [points entity];
     NSDictionary *attributes = [entity attributesByName];
@@ -226,8 +291,8 @@
     NSFetchRequest *pointsRequest = [NSFetchRequest fetchRequestWithEntityName:@"Points"];
     NSArray *fetchResultsPoints = [self.moc executeFetchRequest:pointsRequest error:&error];
     
-    Points *p1Points = [fetchResultsPoints objectAtIndex:0];
-    Points *p2Points = [fetchResultsPoints objectAtIndex:1];
+    Points *p1Points = [fetchResultsPoints objectAtIndex:[fetchResultsPoints count]-2];
+    Points *p2Points = [fetchResultsPoints objectAtIndex:[fetchResultsPoints count]-1];
     
     NSEntityDescription *p1Entity = [p1Points entity];
     NSDictionary *p1Attributes = [p1Entity attributesByName];

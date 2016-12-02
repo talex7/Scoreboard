@@ -14,10 +14,11 @@
 @interface PlayerViewController : UIViewController <displayBoard>
 
 
-@property (nonatomic) NSArray<Player*> *players;
+@property (nonatomic) NSMutableArray<Player*> *players;
 @property (nonatomic) NSManagedObjectContext *moc;
 @property (nonatomic) NSInteger pageIndex;
 @property (nonatomic) NSInteger shotCount;
 @property (nonatomic) NSArray *shotValues;
+@property (nonatomic) BOOL newGame;
 
 @end
