@@ -72,7 +72,6 @@
     if (gameType == 0)
     {
         Game *game = [NSEntityDescription insertNewObjectForEntityForName:@"Game" inManagedObjectContext:self.moc];
-        
         Points *playerPoints = [NSEntityDescription insertNewObjectForEntityForName:@"Points" inManagedObjectContext:self.moc];
         Points *opponentPoints = [NSEntityDescription insertNewObjectForEntityForName:@"Points" inManagedObjectContext:self.moc];
         
@@ -101,7 +100,6 @@
             [playerArray addObject:player];
         }
         
-        
         game.player = (NSOrderedSet<Player*>*)[NSOrderedSet orderedSetWithArray:playerArray];
         
         if (fetchResultsGames.count > 0) {
@@ -111,11 +109,11 @@
             [self.moc deleteObject:[points objectAtIndex:0]];
             [self.moc deleteObject:[points objectAtIndex:1]];
         }
+        if (![self.moc save:&error]) {
+            NSAssert(NO, @"Error saving context: %@\n%@", [error localizedDescription], [error userInfo]);
+        }
     }
     
-    if (![self.moc save:&error]) {
-        NSAssert(NO, @"Error saving context: %@\n%@", [error localizedDescription], [error userInfo]);
-    }
     pVC.moc = self.moc;
     pVC.pageIndex = 0;
 }

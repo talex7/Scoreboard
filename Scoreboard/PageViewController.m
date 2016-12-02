@@ -32,9 +32,10 @@
     NSFetchRequest *gameRequest = [NSFetchRequest fetchRequestWithEntityName:@"Game"];
     NSDate *date;
     [gameRequest setPredicate:[NSPredicate predicateWithFormat:@"timeEnded = %@", date]];
+    
     NSArray *fetchResultsGames = [self.moc executeFetchRequest:gameRequest error:&error];
     
-    Game *g = [fetchResultsGames lastObject];
+    Game *g = [fetchResultsGames firstObject];
     self.game = g;
     
     if (self.game.turnCounter == 1) {

@@ -27,12 +27,8 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     NSError *error = nil;
-    NSFetchRequest *gameRequest = [NSFetchRequest fetchRequestWithEntityName:@"Game"];
     NSFetchRequest *pointsRequest = [NSFetchRequest fetchRequestWithEntityName:@"Points"];
     NSFetchRequest *playerRequest = [NSFetchRequest fetchRequestWithEntityName:@"Player"];
-    
-    NSDate *date;
-    [gameRequest setPredicate:[NSPredicate predicateWithFormat:@"timeEnded = %@", date]];
     
     NSArray *fetchResultsPoints = [self.moc executeFetchRequest:pointsRequest error:&error];
     NSArray *fetchResultsPlayer = [self.moc executeFetchRequest:playerRequest error:&error];
