@@ -5,10 +5,13 @@
 //  Created by Matthew Mauro on 2016-11-28.
 //
 //
+
+#import "Points501+CoreDataClass.h"
 #import "Player+CoreDataClass.h"
-#import "Points+CoreDataClass.h"
+#import "CricketPoints+CoreDataClass.h"
 #import "PageViewController.h"
 #import "PlayerViewController.h"
+#import "FiveSummaryViewController.h"
 
 @interface PlayerViewController () <Pages>
 @property (weak, nonatomic) IBOutlet UIButton *finshButton;
@@ -17,6 +20,8 @@
 @property Game *game;
 @property (nonatomic) NSMutableDictionary *p1TimesHit;
 @property (nonatomic) NSMutableDictionary *p2TimesHit;
+@property ScoringStatus *p1Status;
+@property ScoringStatus *p2Status;
 @end
 
 @implementation PlayerViewController
@@ -51,7 +56,7 @@
     [self.players addObject:[fetchResultsPlayer objectAtIndex:0]];
     [self.players addObject:[fetchResultsPlayer objectAtIndex:1]];
     
-    if (self.game.turnCounter == 1) {
+    if (self.newGame == YES){
         UIAlertController * alert = [UIAlertController
                                      alertControllerWithTitle:@"Flipping"
                                      message:@"Flipping Coin for Turn Order"
@@ -71,23 +76,26 @@
                                     }];
         [alert addAction:yesButton];
         [self presentViewController:alert animated:YES completion:nil];
+        self.newGame = NO;
     }
 }
 -(void)viewWillAppear:(BOOL)animated
 {
     if (self.newGame == YES) {
-        NSError *error = nil;
-        NSFetchRequest *pointsRequest = [NSFetchRequest fetchRequestWithEntityName:@"Points"];
-        NSArray *fetchResultsPoints = [self.moc executeFetchRequest:pointsRequest error:&error];
         
-        for (Points* points in fetchResultsPoints) {
-            NSEntityDescription *entity = [points entity];
+        self.p1TimesHit = [NSMutableDictionary new];
+        self.p2TimesHit = [NSMutableDictionary new];
+        NSError *error = nil;
+        NSFetchRequest *cricketPointsRequest = [NSFetchRequest fetchRequestWithEntityName:@"CricketPoints"];
+        NSArray *fetchResultsCricketPoints = [self.moc executeFetchRequest:cricketPointsRequest error:&error];
+        
+        for (CricketPoints* cricketPoints in fetchResultsCricketPoints) {
+            NSEntityDescription *entity = [cricketPoints entity];
             NSDictionary *attributes = [entity attributesByName];
             for (NSString *str in attributes) {
-                [points setValue:0 forKey:str];
+                [cricketPoints setValue:0 forKey:str];
             }
         }
-        self.newGame = NO;
     }
     
     if (self.game.turnCounter % 2 == 0) {
@@ -95,6 +103,7 @@
     }else{
         self.currentPlayerLabel.text = [self.players objectAtIndex:0].name;
     }
+    
     [self updatePlayerScoring];
     if ([self checkIfGameIsComplete] == YES) {
         UIAlertController * alert = [UIAlertController
@@ -155,74 +164,157 @@
         NSInteger shot3Val = [[shot3 substringToIndex:shot3.length-2]integerValue];
         NSInteger shot3Multi = [[shot3 substringFromIndex:shot3.length-1]integerValue];
         
-        //fetch current point entity
-        NSError *error = nil;
-        NSFetchRequest *pointsRequest = [NSFetchRequest fetchRequestWithEntityName:@"Points"];
-        NSArray *fetchResultsPoints = [self.moc executeFetchRequest:pointsRequest error:&error];
-        
-        Points *p1Points = [fetchResultsPoints objectAtIndex:[fetchResultsPoints count]-2];
-        Points *p2Points = [fetchResultsPoints objectAtIndex:[fetchResultsPoints count]-1];
-        
-        if (self.game.turnCounter % 2 == 0) {
-            NSEntityDescription *entity = [p2Points entity];
-            NSDictionary *attributes = [entity attributesByName];
-            NSError *error = nil;
-            for (NSString *str in attributes) {
-                NSInteger timesHit = [[p2Points valueForKey:str]integerValue];
-                NSCharacterSet *p = [NSCharacterSet characterSetWithCharactersInString:@"p"];
-                NSInteger slice = [[str stringByTrimmingCharactersInSet:p]integerValue];
-                if (shot1Val == slice) {
-                    timesHit += shot1Multi;
-                    [p2Points setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
-                    [self.p2TimesHit setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
-                }
-                if (shot2Val == slice){
-                    timesHit += shot2Multi;
-                    [p2Points setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
-                    
-                    [self.p2TimesHit setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
-                }
-                if (shot3Val == slice){
-                    timesHit += shot3Multi;
-                    [p2Points setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
-                    [self.p2TimesHit setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
-                }
-            }
-            self.game.p2Pts += [self getPlayerScore:[self.players objectAtIndex:1] with:p2Points againstOpponent:p1Points];
-            [self.moc save:&error];
-            if (error){
-                NSAssert(NO, @"Error saving context: %@\n%@", [error localizedDescription], [error userInfo]);
-            }
-        }else{
-            p1Points = (Points*)[fetchResultsPoints objectAtIndex:0];
-            p1Points.player = [self.players objectAtIndex:0];
-            NSEntityDescription *entity = [p1Points entity];
-            NSDictionary *attributes = [entity attributesByName];
-            NSError *error = nil;
+        // depends on game type
+        if ([self.game.gameType isEqualToString:@"Cricket"]) {
             
-            for (NSString *str in attributes) {
-                NSInteger timesHit = [[p1Points valueForKey:str]integerValue];
-                NSCharacterSet *p = [NSCharacterSet characterSetWithCharactersInString:@"p"];
-                NSInteger slice = [[str stringByTrimmingCharactersInSet:p]integerValue];
-                if (shot1Val == slice) {
-                    timesHit += shot1Multi;
-                    [p1Points setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
-                    [self.p1TimesHit setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
+            //fetch current point entity
+            NSError *error = nil;
+            NSFetchRequest *CricketPointsRequest = [NSFetchRequest fetchRequestWithEntityName:@"CricketPoints"];
+            NSArray *fetchResultsCricketPoints = [self.moc executeFetchRequest:CricketPointsRequest error:&error];
+            
+            CricketPoints *p1CricketPoints = [fetchResultsCricketPoints objectAtIndex:[fetchResultsCricketPoints count]-2];
+            CricketPoints *p2CricketPoints = [fetchResultsCricketPoints objectAtIndex:[fetchResultsCricketPoints count]-1];
+            
+            if (self.game.turnCounter % 2 == 0) {
+                p2CricketPoints.player = [self.players objectAtIndex:1];
+                NSEntityDescription *entity = [p2CricketPoints entity];
+                NSDictionary *attributes = [entity attributesByName];
+                NSError *error = nil;
+                for (NSString *str in attributes) {
+                    NSInteger timesHit = [[p2CricketPoints valueForKey:str]integerValue];
+                    [self.p2TimesHit setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
+                    NSCharacterSet *p = [NSCharacterSet characterSetWithCharactersInString:@"p"];
+                    NSInteger slice = [[str stringByTrimmingCharactersInSet:p]integerValue];
+                    if (shot1Val == slice) {
+                        timesHit += shot1Multi;
+                        [p2CricketPoints setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
+                    }
+                    if (shot2Val == slice){
+                        timesHit += shot2Multi;
+                        [p2CricketPoints setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
+                    }
+                    if (shot3Val == slice){
+                        timesHit += shot3Multi;
+                        [p2CricketPoints setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
+                    }
                 }
-                if (shot2Val == slice){
-                    timesHit += shot2Multi;
-                    [p1Points setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
-                    [self.p1TimesHit setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
+                self.game.p2Pts += [self getPlayerScore:[self.players objectAtIndex:1] with:p2CricketPoints againstOpponent:p1CricketPoints];
+                [self.moc save:&error];
+                if (error){
+                    NSAssert(NO, @"Error saving context: %@\n%@", [error localizedDescription], [error userInfo]);
                 }
-                if (shot3Val == slice){
-                    timesHit += shot3Multi;
-                    [p1Points setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
+            }else{
+                p1CricketPoints.player = [self.players objectAtIndex:0];
+                NSEntityDescription *entity = [p1CricketPoints entity];
+                NSDictionary *attributes = [entity attributesByName];
+                NSError *error = nil;
+                
+                for (NSString *str in attributes) {
+                    NSInteger timesHit = [[p1CricketPoints valueForKey:str]integerValue];
                     [self.p1TimesHit setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
+                    NSCharacterSet *p = [NSCharacterSet characterSetWithCharactersInString:@"p"];
+                    NSInteger slice = [[str stringByTrimmingCharactersInSet:p]integerValue];
+                    if (shot1Val == slice) {
+                        timesHit += shot1Multi;
+                        [p1CricketPoints setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
+                    }
+                    if (shot2Val == slice){
+                        timesHit += shot2Multi;
+                        [p1CricketPoints setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
+                    }
+                    if (shot3Val == slice){
+                        timesHit += shot3Multi;
+                        [p1CricketPoints setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
+                    }
+                }
+                self.game.p1Pts += [self getPlayerScore:[self.players objectAtIndex:0] with:p1CricketPoints againstOpponent:p2CricketPoints];
+                if (![self.moc save:&error]) {
+                    NSAssert(NO, @"Error saving context: %@\n%@", [error localizedDescription], [error userInfo]);
                 }
             }
-            self.game.p1Pts += [self getPlayerScore:[self.players objectAtIndex:0] with:p1Points againstOpponent:p2Points];
-            if (![self.moc save:&error]) {
-                NSAssert(NO, @"Error saving context: %@\n%@", [error localizedDescription], [error userInfo]);
+        }else if ([self.game.gameType isEqualToString:@"501"]){
+            
+            //fetch current point entity
+            NSError *error = nil;
+            NSFetchRequest *Points501Request = [NSFetchRequest fetchRequestWithEntityName:@"Points501"];
+            NSArray *fetchResultsPoints501 = [self.moc executeFetchRequest:Points501Request error:&error];
+            
+            Points501 *p1Points501 = [fetchResultsPoints501 objectAtIndex:[fetchResultsPoints501 count]-2];
+            Points501 *p2Points501 = [fetchResultsPoints501 objectAtIndex:[fetchResultsPoints501 count]-1];
+            
+            if (self.game.turnCounter % 2 == 0) {
+                p2Points501.player = [self.players objectAtIndex:1];
+                NSEntityDescription *entity = [p2Points501 entity];
+                NSDictionary *attributes = [entity attributesByName];
+                NSError *error = nil;
+                for (NSString *str in attributes) {
+                    NSInteger timesHit = [[p2Points501 valueForKey:str]integerValue];
+                    [self.p2TimesHit setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
+                    NSCharacterSet *p = [NSCharacterSet characterSetWithCharactersInString:@"p"];
+                    NSInteger slice = [[str stringByTrimmingCharactersInSet:p]integerValue];
+                    if (shot1Val == slice) {
+                        if (shot1Multi == 2 && ScoringClosed == self.p2Status) {
+                            self.p2Status = (long*)ScoringOpen;
+                            timesHit += shot1Multi;
+                        }else if ((long*)ScoringOpen == self.p2Status){
+                            timesHit += shot1Multi;
+                        }
+                        [p2Points501 setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
+                    }
+                    if (shot2Val == slice){
+                        if (shot2Multi == 2 && ScoringClosed == self.p2Status) {
+                            self.p2Status = (long*)ScoringOpen;
+                            timesHit += shot2Multi;
+                        }else if ((long*)ScoringOpen == self.p2Status){
+                            timesHit += shot2Multi;
+                        }
+                        timesHit += shot2Multi;
+                        [p2Points501 setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
+                    }
+                    if (shot3Val == slice){
+                        if (shot3Multi == 2 && ScoringClosed == self.p2Status) {
+                            self.p2Status = (long*)ScoringOpen;
+                            timesHit += shot3Multi;
+                        }else if ((long*)ScoringOpen == self.p2Status){
+                            timesHit += shot3Multi;
+                        }
+                        timesHit += shot3Multi;
+                        [p2Points501 setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
+                    }
+                }
+                self.game.p2Pts += [self getPlayer501Score:[self.players objectAtIndex:1] with:p2Points501];
+                [self.moc save:&error];
+                if (error){
+                    NSAssert(NO, @"Error saving context: %@\n%@", [error localizedDescription], [error userInfo]);
+                }
+            }else{
+                p1Points501.player = [self.players objectAtIndex:0];
+                NSEntityDescription *entity = [p1Points501 entity];
+                NSDictionary *attributes = [entity attributesByName];
+                NSError *error = nil;
+                
+                for (NSString *str in attributes) {
+                    NSInteger timesHit = [[p1Points501 valueForKey:str]integerValue];
+                    [self.p1TimesHit setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
+                    NSCharacterSet *p = [NSCharacterSet characterSetWithCharactersInString:@"p"];
+                    NSInteger slice = [[str stringByTrimmingCharactersInSet:p]integerValue];
+                    if (shot1Val == slice) {
+                        timesHit += shot1Multi;
+                        [p1Points501 setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
+                    }
+                    if (shot2Val == slice){
+                        timesHit += shot2Multi;
+                        [p1Points501 setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
+                    }
+                    if (shot3Val == slice){
+                        timesHit += shot3Multi;
+                        [p1Points501 setValue:[NSNumber numberWithInteger:timesHit] forKey:str];
+                    }
+                }
+                self.game.p1Pts += [self getPlayer501Score:[self.players objectAtIndex:0] with:p1Points501];
+                if (![self.moc save:&error]) {
+                    NSAssert(NO, @"Error saving context: %@\n%@", [error localizedDescription], [error userInfo]);
+                }
             }
         }
         self.game.turnCounter++;
@@ -232,10 +324,10 @@
 }
 
 #pragma mark - Update Player's score
--(NSInteger)getPlayerScore:(Player*)player with:(Points*)points againstOpponent:(Points*)oppPoints
+-(NSInteger)getPlayerScore:(Player*)player with:(CricketPoints*)cricketPoints againstOpponent:(CricketPoints*)oppCricketPoints
 {
     NSInteger increasedScore = 0;
-    NSEntityDescription *entity = [points entity];
+    NSEntityDescription *entity = [cricketPoints entity];
     NSDictionary *attributes = [entity attributesByName];
     for (NSString *str in attributes) {
         
@@ -248,12 +340,12 @@
             previousHits = [[self.p2TimesHit valueForKey:str]integerValue];
         }
         
-        NSInteger timesHit = [[points valueForKey:str]integerValue];
+        NSInteger timesHit = [[cricketPoints valueForKey:str]integerValue];
         NSCharacterSet *p = [NSCharacterSet characterSetWithCharactersInString:@"p"];
         NSInteger slice = [[str stringByTrimmingCharactersInSet:p]integerValue];
-        if ([[oppPoints valueForKey:str]integerValue] < 3) {
-            if (timesHit > 3) {
-                increasedScore += ((timesHit-3)-previousHits)*slice;
+        if ([[oppCricketPoints valueForKey:str]integerValue] < 3) {
+            if (timesHit > 3 && timesHit > previousHits) {
+                increasedScore += (timesHit-3)*slice;
                 if (increasedScore < 0) {
                     increasedScore = 0;
                 }
@@ -262,67 +354,101 @@
     }
     return increasedScore;
 }
+#pragma mark - Update Player's score (501)
+-(NSInteger)getPlayer501Score:(Player*)player with:(Points501*)points
+{
+    ScoringStatus *status;
+    NSInteger roundScore = 0;
+    NSInteger playerScore;
+    if ([player.name isEqualToString:@"Player"]) {
+        playerScore = self.game.p1Pts;
+        status = self.p1Status;
+    }else{
+        playerScore = self.game.p2Pts;
+        status = self.p2Status;
+    }
+    NSEntityDescription *entity = [points entity];
+    NSDictionary *attributes = [entity attributesByName];
+    for (NSString *str in attributes) {
+        
+        // get previous Hits from dictionary
+        NSInteger previousHits;
+        if ([player.name isEqualToString:@"Player"]) {
+            previousHits = [[self.p1TimesHit valueForKey:str]integerValue];
+        }else{
+            previousHits = [[self.p2TimesHit valueForKey:str]integerValue];
+        }
+        
+        NSInteger timesHit = [[points valueForKey:str]integerValue];
+        NSCharacterSet *p = [NSCharacterSet characterSetWithCharactersInString:@"p"];
+        NSInteger slice = [[str stringByTrimmingCharactersInSet:p]integerValue];
+        if (timesHit > previousHits) {
+            roundScore += (timesHit-3)*slice;
+            if (roundScore < 0) {
+                roundScore = 0;
+            }
+        }
+    }
+    return roundScore;
+    
+}
 
 -(BOOL)checkIfGameIsComplete
 {
     BOOL ended = NO;
     NSError *error = nil;
-    NSFetchRequest *pointsRequest = [NSFetchRequest fetchRequestWithEntityName:@"Points"];
-    NSArray *fetchResultsPoints = [self.moc executeFetchRequest:pointsRequest error:&error];
     
-    Points *p1Points = [fetchResultsPoints objectAtIndex:[fetchResultsPoints count]-2];
-    Points *p2Points = [fetchResultsPoints objectAtIndex:[fetchResultsPoints count]-1];
-    
-    NSEntityDescription *p1Entity = [p1Points entity];
-    NSDictionary *p1Attributes = [p1Entity attributesByName];
-    
-    NSEntityDescription *p2Entity = [p2Points entity];
-    NSDictionary *p2Attributes = [p2Entity attributesByName];
-    
-    NSInteger p1S = [self.players objectAtIndex:0].totalPts;
-    NSInteger p2S = [self.players objectAtIndex:1].totalPts;
-    
-    NSInteger p1Closed = 0;
-    NSInteger p2Closed = 0;
-    
-    for (NSString *str in p1Attributes) {
-        NSInteger timesHit = [[p1Points valueForKey:str]integerValue];
-        if (timesHit >= 3) {
-            p1Closed++;
+    if ([self.game.gameType isEqualToString:@"Cricket"]) {
+        NSFetchRequest *CricketPointsRequest = [NSFetchRequest fetchRequestWithEntityName:@"CricketPoints"];
+        NSArray *fetchResultsCricketPoints = [self.moc executeFetchRequest:CricketPointsRequest error:&error];
+        
+        CricketPoints *p1CricketPoints = [fetchResultsCricketPoints objectAtIndex:[fetchResultsCricketPoints count]-2];
+        CricketPoints *p2CricketPoints = [fetchResultsCricketPoints objectAtIndex:[fetchResultsCricketPoints count]-1];
+        
+        NSEntityDescription *p1Entity = [p1CricketPoints entity];
+        NSDictionary *p1Attributes = [p1Entity attributesByName];
+        
+        NSEntityDescription *p2Entity = [p2CricketPoints entity];
+        NSDictionary *p2Attributes = [p2Entity attributesByName];
+        
+        NSInteger p1S = self.game.p1Pts;
+        NSInteger p2S = self.game.p2Pts;
+        
+        NSInteger p1Closed = 0;
+        NSInteger p2Closed = 0;
+        
+        for (NSString *str in p1Attributes) {
+            NSInteger timesHit = [[p1CricketPoints valueForKey:str]integerValue];
+            if (timesHit >= 3) {
+                p1Closed++;
+            }
         }
-    }
-    for (NSString *str in p2Attributes) {
-        NSInteger timesHit = [[p2Points valueForKey:str]integerValue];
-        if (timesHit >= 3) {
-            p2Closed++;
+        for (NSString *str in p2Attributes) {
+            NSInteger timesHit = [[p2CricketPoints valueForKey:str]integerValue];
+            if (timesHit >= 3) {
+                p2Closed++;
+            }
         }
-    }
-    
-//    if (p1Closed == 7 && p2Closed >= 7) {
-//        if (p1S > p2S) {
-//            self.game.timeEnded = [NSDate date];
-//            [self.players objectAtIndex:0].gamesWon++;
-//        }else if (p1S < p2S){
-//            self.game.timeEnded = [NSDate date];
-//            [self.players objectAtIndex:1].gamesWon++;
-//        }else{
-//            self.game.timeEnded = [NSDate date];
-//        }
-//        ended = YES;
-//    }
-    
-    if (p1Closed == 7 && p1S > p2S) {
-        self.game.timeEnded = [NSDate date];
-        [self.players objectAtIndex:0].gamesWon++;
-        ended = YES;
-    }
-    if (p2Closed == 7 && p1S < p2S) {
-        self.game.timeEnded = [NSDate date];
-        [self.players objectAtIndex:0].gamesWon++;
-        ended = YES;
-    }
-    if (![self.moc save:&error]) {
-        NSAssert(NO, @"Error saving context: %@\n%@", [error localizedDescription], [error userInfo]);
+        
+        if (p1Closed == 7 && p1S > p2S) {
+            self.game.timeEnded = [NSDate date];
+            [self.players objectAtIndex:0].gamesWon++;
+            ended = YES;
+        }
+        if (p2Closed == 7 && p1S < p2S) {
+            self.game.timeEnded = [NSDate date];
+            [self.players objectAtIndex:0].gamesWon++;
+            ended = YES;
+        }
+        if (![self.moc save:&error]) {
+            NSAssert(NO, @"Error saving context: %@\n%@", [error localizedDescription], [error userInfo]);
+        }
+    } else if ([self.game.gameType isEqualToString:@"501"]){
+        
+        // Setup Endgame conditions for 501
+        
+        
+        
     }
     return ended;
 }

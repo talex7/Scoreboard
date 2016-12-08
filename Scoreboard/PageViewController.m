@@ -9,6 +9,7 @@
 #import "PageViewController.h"
 #import "PlayerViewController.h"
 #import "GameSummaryViewController.h"
+#import "FiveSummaryViewController.h"
 
 @interface PageViewController ()
 @property Game *game;
@@ -38,15 +39,21 @@
     Game *g = [fetchResultsGames firstObject];
     self.game = g;
     
-    if (self.game.turnCounter == 1) {
+    if (self.game.turnCounter == 1 && self.game.gameType == nil) {
         self.newGame = YES;
     }
     
     [self.viewCs addObject:board];
     
-    GameSummaryViewController *gameSummary = [self.storyboard instantiateViewControllerWithIdentifier:@"GameSummary"];
-    self.gameSummary = gameSummary;
-    [self.viewCs addObject:gameSummary];
+    if ([self.game.gameType isEqualToString:@"Criket"]) {
+        GameSummaryViewController *gameSummary = [self.storyboard instantiateViewControllerWithIdentifier:@"CricketSummary"];
+        self.gameSummary = gameSummary;
+        [self.viewCs addObject:gameSummary];
+    }else{
+        GameSummaryViewController *gameSummary = [self.storyboard instantiateViewControllerWithIdentifier:@"Summary501"];
+        self.gameSummary = gameSummary;
+        [self.viewCs addObject:gameSummary];
+    }
     
     [self setViewControllers:@[self.playerViewController] direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:nil];
 }
@@ -68,10 +75,17 @@
         playerView.moc = self.moc;
         return playerView;
     }else{
-        GameSummaryViewController *gameSummary = [self.storyboard instantiateViewControllerWithIdentifier:@"GameSummary"];
-        gameSummary.pageIndex = index;
-        gameSummary.moc = self.moc;
-        return gameSummary;
+        if ([self.game.gameType isEqualToString:@"Cricket"]) {
+            GameSummaryViewController *gameSummary = [self.storyboard instantiateViewControllerWithIdentifier:@"CricketSummary"];
+            gameSummary.pageIndex = index;
+            gameSummary.moc = self.moc;
+            return gameSummary;
+        }else{
+            FiveSummaryViewController *gameSummary = [self.storyboard instantiateViewControllerWithIdentifier:@"Summary501"];
+            gameSummary.pageIndex = index;
+            gameSummary.moc = self.moc;
+            return gameSummary;
+        }
     }
 }
 

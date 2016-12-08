@@ -7,7 +7,7 @@
 //
 
 #import "Player+CoreDataClass.h"
-#import "Points+CoreDataClass.h"
+#import "CricketPoints+CoreDataClass.h"
 #import "Game+CoreDataClass.h"
 #import <UIKit/UIKit.h>
 

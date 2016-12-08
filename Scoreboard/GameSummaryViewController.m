@@ -28,7 +28,7 @@
 {
     NSError *error = nil;
     NSFetchRequest *gameRequest = [NSFetchRequest fetchRequestWithEntityName:@"Game"];
-    NSFetchRequest *pointsRequest = [NSFetchRequest fetchRequestWithEntityName:@"Points"];
+    NSFetchRequest *pointsRequest = [NSFetchRequest fetchRequestWithEntityName:@"CricketPoints"];
     NSFetchRequest *playerRequest = [NSFetchRequest fetchRequestWithEntityName:@"Player"];
     NSDate *date;
     [gameRequest setPredicate:[NSPredicate predicateWithFormat:@"timeEnded = %@", date]];
@@ -46,21 +46,20 @@
     self.p1Label.text = p1.name;
     self.p2Label.text = p2.name;
     
-    Points *p1Points = [fetchResultsPoints objectAtIndex:[fetchResultsPoints count]-2];
-    Points *p2Points = [fetchResultsPoints objectAtIndex:[fetchResultsPoints count]-1];
+    CricketPoints *p1Points = [fetchResultsPoints objectAtIndex:[fetchResultsPoints count]-2];
+    CricketPoints *p2Points = [fetchResultsPoints objectAtIndex:[fetchResultsPoints count]-1];
     
     [self scoreFinder:p1Points in:self.p1ScoreImages];
     [self scoreFinder:p2Points in:self.p2ScoreImages];
     
     self.p1ScoreLabel.text = [NSString stringWithFormat:@"%d", self.game.p1Pts];
     self.p2ScoreLabel.text = [NSString stringWithFormat:@"%d", self.game.p2Pts];
-    
 }
 
 
 #pragma mark - Scoring fuctions
 
--(void)scoreFinder:(Points*)points in:(NSArray*)array
+-(void)scoreFinder:(CricketPoints*)points in:(NSArray*)array
 {
     NSEntityDescription *entity = [points entity];
     NSDictionary *attributes = [entity attributesByName];
