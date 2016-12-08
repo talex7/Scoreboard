@@ -2,10 +2,11 @@
 //  PageViewController.m
 //  Scoreboard
 //
-//  Created by Matthew Mauro and Tommy Alexian
+//  Created by Matthew Mauro and Tommy Alexanian
 //
 //
 
+#import "Game+CoreDataProperties.h"
 #import "PageViewController.h"
 #import "PlayerViewController.h"
 #import "GameSummaryViewController.h"
@@ -20,15 +21,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.dataSource = self;
-    self.pageIndex = 0;
-    self.viewCs = [NSMutableArray new];
-    PlayerViewController *board = [self.storyboard instantiateViewControllerWithIdentifier:@"BoardController"];
-    self.playerViewController = board;
-    
-    AppDelegate *appDelegate = (AppDelegate*)([[UIApplication sharedApplication] delegate]);
-    self.moc = appDelegate.managedObjectContext;
-    
     NSError *error = nil;
     NSFetchRequest *gameRequest = [NSFetchRequest fetchRequestWithEntityName:@"Game"];
     NSDate *date;
@@ -36,21 +28,32 @@
     
     NSArray *fetchResultsGames = [self.moc executeFetchRequest:gameRequest error:&error];
     
-    Game *g = [fetchResultsGames firstObject];
+    Game *g = [fetchResultsGames lastObject];
     self.game = g;
     
-    if (self.game.turnCounter == 1 && self.game.gameType == nil) {
+    if (g.turnCounter == 1) {
         self.newGame = YES;
     }
+    self.dataSource = self;
+    self.pageIndex = 0;
+    self.viewCs = [NSMutableArray new];
+    PlayerViewController *board = [self.storyboard instantiateViewControllerWithIdentifier:@"BoardController"];
+    board.newGame = self.newGame;
+    board.moc = self.moc;
+    self.playerViewController = board;
+    
+    AppDelegate *appDelegate = (AppDelegate*)([[UIApplication sharedApplication] delegate]);
+    self.moc = appDelegate.managedObjectContext;
     
     [self.viewCs addObject:board];
     
-    if ([self.game.gameType isEqualToString:@"Criket"]) {
+    if ([self.game.gameType isEqualToString:@"Cricket"]) {
         GameSummaryViewController *gameSummary = [self.storyboard instantiateViewControllerWithIdentifier:@"CricketSummary"];
         self.gameSummary = gameSummary;
         [self.viewCs addObject:gameSummary];
-    }else{
-        GameSummaryViewController *gameSummary = [self.storyboard instantiateViewControllerWithIdentifier:@"Summary501"];
+    }else if ([self.game.gameType isEqualToString:@"501"]){
+        FiveSummaryViewController *gameSummary = [self.storyboard instantiateViewControllerWithIdentifier:@"Summary501"];
+        gameSummary.newGame = self.newGame;
         self.gameSummary = gameSummary;
         [self.viewCs addObject:gameSummary];
     }

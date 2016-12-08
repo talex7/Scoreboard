@@ -16,9 +16,9 @@ enum {
 };
 typedef NSInteger ScoringStatus;
 
-
 @interface FiveSummaryViewController : UIViewController <Pages>
 
+@property (nonatomic) BOOL newGame;
 @property (nonatomic) NSInteger pageIndex;
 @property (nonatomic) NSManagedObjectContext *moc;
 

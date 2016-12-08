@@ -2,7 +2,7 @@
 //  PageViewController.h
 //  Scoreboard
 //
-//  Created by Matthew Mauro on 2016-11-28.
+//  Created by Matthew Mauro and Tommy Alexanian
 //
 //
 
@@ -19,11 +19,10 @@
 
 @interface PageViewController : UIPageViewController <UIPageViewControllerDataSource>
 
-
 @property (nonatomic) NSInteger pageIndex;
 @property (nonatomic) NSManagedObjectContext *moc;
 @property (nonatomic) PlayerViewController *playerViewController;
-@property (nonatomic) GameSummaryViewController *gameSummary;
+@property (nonatomic) id<Pages> gameSummary;
 @property (strong, nonatomic) NSMutableArray<UIViewController*> *viewCs;
 
 @end

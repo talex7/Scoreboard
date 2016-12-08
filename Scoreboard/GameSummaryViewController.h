@@ -11,7 +11,7 @@
 #import "Game+CoreDataClass.h"
 #import <UIKit/UIKit.h>
 
-@interface GameSummaryViewController : UIViewController
+@interface GameSummaryViewController : UIViewController <Pages>
 
 @property (nonatomic) NSInteger pageIndex;
 @property (nonatomic) NSManagedObjectContext *moc;

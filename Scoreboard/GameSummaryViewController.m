@@ -8,7 +8,7 @@
 #import "PageViewController.h"
 #import "GameSummaryViewController.h"
 
-@interface GameSummaryViewController () <Pages>
+@interface GameSummaryViewController () 
 @property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *p1ScoreImages;
 @property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *p2ScoreImages;
 @property (weak, nonatomic) IBOutlet UILabel *p1ScoreLabel;

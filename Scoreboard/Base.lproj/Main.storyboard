@@ -332,6 +332,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
+                        <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="76b-66-hf1" firstAttribute="height" secondItem="sVQ-08-xM1" secondAttribute="height" constant="-20" id="2iE-rG-G0C"/>
                             <constraint firstItem="hMj-mZ-czw" firstAttribute="width" secondItem="76b-66-hf1" secondAttribute="width" multiplier="0.9" id="6hS-wZ-d6w"/>
@@ -509,6 +510,7 @@
                                 </constraints>
                             </imageView>
                         </subviews>
+                        <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="tWg-qi-0nL" firstAttribute="centerY" secondItem="3wx-ME-Iwf" secondAttribute="centerY" multiplier="0.94" constant="-3.8899999999999864" id="3Bi-u7-aK2"/>
                             <constraint firstItem="3wx-ME-Iwf" firstAttribute="leading" secondItem="jdQ-uP-HZ3" secondAttribute="leading" id="3EY-xZ-mfE"/>
@@ -552,6 +554,7 @@
                             <constraint firstItem="RRI-wE-lrc" firstAttribute="centerX" secondItem="D2Q-k4-F62" secondAttribute="centerX" constant="-1" id="xEY-Nz-Cyu"/>
                         </constraints>
                     </view>
+                    <nil key="simulatedTopBarMetrics"/>
                     <connections>
                         <outlet property="p1Label" destination="28d-p6-kGg" id="Bkc-N3-99I"/>
                         <outlet property="p1ScoreLabel" destination="D2Q-k4-F62" id="Pzg-Dy-YJv"/>
@@ -606,14 +609,14 @@
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yl8-bF-G72">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yl8-bF-G72">
                                 <rect key="frame" x="203" y="146" width="156" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tBC-Rb-fzz">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tBC-Rb-fzz">
                                 <rect key="frame" x="16" y="146" width="156" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -647,8 +650,10 @@
                     <connections>
                         <outlet property="p1Label" destination="igO-t6-0hz" id="rsV-w7-PLX"/>
                         <outlet property="p1Score" destination="tBC-Rb-fzz" id="9Lz-Sp-sgI"/>
+                        <outlet property="p1Text" destination="Ew6-zM-hTm" id="gp1-K5-Sp6"/>
                         <outlet property="p2Label" destination="boe-ft-Zf3" id="yFS-BO-WJ4"/>
                         <outlet property="p2Score" destination="yl8-bF-G72" id="eF3-ty-Z3a"/>
+                        <outlet property="p2Text" destination="1LV-0c-rJ0" id="doJ-y2-w1D"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="y8P-vZ-cc2" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -668,8 +673,9 @@
         <!--Navigation Controller-->
         <scene sceneID="qWf-YC-bVt">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="GOb-s8-geA" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="GOb-s8-geA" sceneMemberID="viewController">
                     <toolbarItems/>
+                    <nil key="simulatedTopBarMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="2yY-1P-b6k">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>

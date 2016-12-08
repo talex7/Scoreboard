@@ -58,11 +58,9 @@
     
     NSInteger gameType = [self.playerPicker selectedRowInComponent:0];
     
-    __block BOOL alertDone = FALSE;
+    
     if (gameType == 0)
     {
-        Game *game = [NSEntityDescription insertNewObjectForEntityForName:@"Game" inManagedObjectContext:self.moc];
-        
         UIAlertController * alert = [UIAlertController
                                      alertControllerWithTitle:@"New Game"
                                      message:@"Choose the Game Rules"
@@ -71,26 +69,18 @@
                                          actionWithTitle:@"501"
                                          style:UIAlertActionStyleDefault
                                          handler:^(UIAlertAction * action) {
-                                             //Handle your yes please button action here
-                                             game.gameType = @"501";
-                                             NSError *error = nil;
-                                             if (![self.moc save:&error]) {
-                                                 NSAssert(NO, @"Error saving context: %@\n%@", [error localizedDescription], [error userInfo]);
-                                             }
-                                             alertDone = YES;
+                                             
+                                             // handle button
+                                             [self saveGameSelection501];
                                              [self performSegueWithIdentifier:@"501" sender:sender];
                                          }];
         UIAlertAction* cricketButton = [UIAlertAction
                                         actionWithTitle:@"Cricket"
                                         style:UIAlertActionStyleDefault
                                         handler:^(UIAlertAction * action) {
-                                            //Handle your yes please button action here
-                                            game.gameType = @"Cricket";
-                                            NSError *error = nil;
-                                            if (![self.moc save:&error]) {
-                                                NSAssert(NO, @"Error saving context: %@\n%@", [error localizedDescription], [error userInfo]);
-                                            }
-                                            alertDone = TRUE;
+                                            
+                                            // Handle button
+                                            [self saveGameSelectionCricket];
                                             [self performSegueWithIdentifier:@"Cricket" sender:sender];
                                         }];
         [alert addAction:fiveOOneButton];
@@ -102,9 +92,83 @@
     }
 }
 
--(void)saveGameSelection
+-(void)saveGameSelection501
 {
-    // Save game settings and perform segue
+    // Create and save new 501 game
+    Game *g = [NSEntityDescription insertNewObjectForEntityForName:@"Game" inManagedObjectContext:self.moc];
+    g.gameType = @"501";
+    g.timeStarted = [NSDate date];
+    NSFetchRequest *requestPlayers = [NSFetchRequest fetchRequestWithEntityName:@"Player"];
+    NSError *error = nil;
+    NSArray *fetchedPlayers = [self.moc executeFetchRequest:requestPlayers error:&error];
+    Points501 *playerPoints = [NSEntityDescription insertNewObjectForEntityForName:@"Points501" inManagedObjectContext:self.moc];
+    Points501 *opponentPoints = [NSEntityDescription insertNewObjectForEntityForName:@"Points501" inManagedObjectContext:self.moc];
+    g.pointsFive = [[NSOrderedSet alloc]initWithObjects:playerPoints, opponentPoints, nil];
+    g.turnCounter = 1;
+    g.p1Pts = 501;
+    g.p2Pts = 501;
+    
+    NSMutableArray *players = [NSMutableArray new];
+    if (fetchedPlayers.count < 1) {
+        Player *player = [NSEntityDescription insertNewObjectForEntityForName:@"Player" inManagedObjectContext:self.moc];
+        player.name = @"Player";
+        player.pointsFive = [[NSOrderedSet alloc] initWithObjects:playerPoints, nil];
+        [players addObject:player];
+    }
+    if (fetchedPlayers.count < 2) {
+        Player *player = [NSEntityDescription insertNewObjectForEntityForName:@"Player" inManagedObjectContext:self.moc];
+        player.name = @"Opponent";
+        player.pointsFive= [[NSOrderedSet alloc] initWithObjects:opponentPoints, nil];
+        [players addObject:player];
+    }
+    if (fetchedPlayers.count > 0) {
+        for (Player* p in fetchedPlayers) {
+            [players addObject:p];
+        }
+    }
+    g.player = [NSOrderedSet orderedSetWithArray:players];
+    if (![self.moc save:&error]) {
+        NSAssert(NO, @"Error saving context: %@\n%@", [error localizedDescription], [error userInfo]);
+    }
+}
+-(void)saveGameSelectionCricket
+{
+    // Create and save new Cricket game
+    Game *g = [NSEntityDescription insertNewObjectForEntityForName:@"Game" inManagedObjectContext:self.moc];
+    g.gameType = @"Cricket";
+    g.timeStarted = [NSDate date];
+    NSFetchRequest *requestPlayers = [NSFetchRequest fetchRequestWithEntityName:@"Player"];
+    NSError *error = nil;
+    NSArray *fetchedPlayers = [self.moc executeFetchRequest:requestPlayers error:&error];
+    CricketPoints *playerPoints = [NSEntityDescription insertNewObjectForEntityForName:@"CricketPoints" inManagedObjectContext:self.moc];
+    CricketPoints *opponentPoints = [NSEntityDescription insertNewObjectForEntityForName:@"CricketPoints" inManagedObjectContext:self.moc];
+    g.pointsCricket = [NSOrderedSet orderedSetWithObjects:playerPoints, opponentPoints, nil];
+    g.turnCounter = 1;
+    g.p1Pts = 0;
+    g.p2Pts = 0;
+    
+    NSMutableArray *players = [NSMutableArray new];
+    if (fetchedPlayers.count < 1) {
+        Player *player = [NSEntityDescription insertNewObjectForEntityForName:@"Player" inManagedObjectContext:self.moc];
+        player.name = @"Player";
+        player.points = [[NSOrderedSet alloc] initWithObjects:playerPoints, nil];
+        [players addObject:player];
+    }
+    if (fetchedPlayers.count < 2) {
+        Player *player = [NSEntityDescription insertNewObjectForEntityForName:@"Player" inManagedObjectContext:self.moc];
+        player.name = @"Opponent";
+        player.points = [[NSOrderedSet alloc] initWithObjects:opponentPoints, nil];
+        [players addObject:player];
+    }
+    if (fetchedPlayers.count > 0) {
+        for (Player* p in fetchedPlayers) {
+            [players addObject:p];
+        }
+    }
+    g.player = [NSOrderedSet orderedSetWithArray:players];
+    if (![self.moc save:&error]) {
+        NSAssert(NO, @"Error saving context: %@\n%@", [error localizedDescription], [error userInfo]);
+    }
 }
 
 #pragma mark - Segues
@@ -112,116 +176,12 @@
 {
     UINavigationController *nav = (UINavigationController*)segue.destinationViewController;
     PageViewController *pVC = (PageViewController*)nav.topViewController;
+    pVC.moc = self.moc;
     
     if ([segue.identifier isEqualToString:@"501"]) {
-        NSFetchRequest *requestPlayers = [NSFetchRequest fetchRequestWithEntityName:@"Player"];
-        NSFetchRequest *requestGames = [NSFetchRequest fetchRequestWithEntityName:@"Game"];
-        NSDate *date;
-        [requestGames setPredicate:[NSPredicate predicateWithFormat:@"timeEnded = %@", date]];
-        NSError *error = nil;
-        NSArray *fetchedPlayers = [self.moc executeFetchRequest:requestPlayers error:&error];
-        NSArray *fetchedGames = [self.moc executeFetchRequest:requestGames error:&error];
-        NSMutableArray *playerArray = [NSMutableArray new];
-        
-        Game *game = [NSEntityDescription insertNewObjectForEntityForName:@"Game" inManagedObjectContext:self.moc];
-        Points501 *playerPoints = [NSEntityDescription insertNewObjectForEntityForName:@"Points501" inManagedObjectContext:self.moc];
-        Points501 *opponentPoints = [NSEntityDescription insertNewObjectForEntityForName:@"Points501" inManagedObjectContext:self.moc];
-        
-        game.pointsFive = [[NSOrderedSet alloc]initWithObjects:playerPoints, opponentPoints, nil];
-        game.timeStarted = [NSDate date];
-        game.turnCounter = 1;
-        
-        if (fetchedPlayers.count >0) {
-            for (Player *p in fetchedPlayers) {
-                p.totalPts = 501;
-            }
-        }
-        
-        if (fetchedPlayers.count < 1) {
-            Player *player = [NSEntityDescription insertNewObjectForEntityForName:@"Player" inManagedObjectContext:self.moc];
-            player.name = @"Player";
-            player.totalPts = 501;
-            player.pointsFive = [[NSOrderedSet alloc] initWithObjects:playerPoints, nil];
-            [playerArray addObject:player];
-        }
-        if (fetchedPlayers.count < 2) {
-            Player *player = [NSEntityDescription insertNewObjectForEntityForName:@"Player" inManagedObjectContext:self.moc];
-            player.name = @"Opponent";
-            player.totalPts = 501;
-            player.pointsFive= [[NSOrderedSet alloc] initWithObjects:opponentPoints, nil];
-            [playerArray addObject:player];
-        }
-        
-        game.player = (NSOrderedSet<Player*>*)[NSOrderedSet orderedSetWithArray:playerArray];
-        
-        if (fetchedGames.count > 0) {
-            Game *game = [fetchedGames firstObject];
-            NSOrderedSet *points501 = game.pointsFive;
-            [self.moc deleteObject:game];
-            if (points501.count >= 2) {
-                [self.moc deleteObject:[points501 objectAtIndex:0]];
-                [self.moc deleteObject:[points501 objectAtIndex:1]];
-            }
-        }
-        if (![self.moc save:&error]) {
-            NSAssert(NO, @"Error saving context: %@\n%@", [error localizedDescription], [error userInfo]);
-        }
         
     }else if ([segue.identifier isEqualToString:@"Cricket"]){
-        NSFetchRequest *requestPlayers = [NSFetchRequest fetchRequestWithEntityName:@"Player"];
-        NSFetchRequest *requestGames = [NSFetchRequest fetchRequestWithEntityName:@"Game"];
         
-        NSDate *date;
-        [requestGames setPredicate:[NSPredicate predicateWithFormat:@"timeEnded = %@", date]];
-        
-        NSError *error = nil;
-        NSArray *fetchedPlayers = [self.moc executeFetchRequest:requestPlayers error:&error];
-        NSArray *fetchedGames = [self.moc executeFetchRequest:requestGames error:&error];
-        NSMutableArray *playerArray = [NSMutableArray new];
-        
-        Game *game = [NSEntityDescription insertNewObjectForEntityForName:@"Game" inManagedObjectContext:self.moc];
-        CricketPoints *playerPoints = [NSEntityDescription insertNewObjectForEntityForName:@"CricketPoints" inManagedObjectContext:self.moc];
-        CricketPoints *opponentPoints = [NSEntityDescription insertNewObjectForEntityForName:@"CricketPoints" inManagedObjectContext:self.moc];
-        
-        game.pointsCricket = [[NSOrderedSet alloc]initWithObjects:playerPoints, opponentPoints, nil];
-        game.timeStarted = [NSDate date];
-        game.turnCounter = 1;
-        
-        if (fetchedPlayers.count >0) {
-            for (Player *p in fetchedPlayers) {
-                p.totalPts = 0;
-            }
-        }
-        
-        if (fetchedPlayers.count < 1) {
-            Player *player = [NSEntityDescription insertNewObjectForEntityForName:@"Player" inManagedObjectContext:self.moc];
-            player.name = @"Player";
-            player.totalPts = 0;
-            player.points = [[NSOrderedSet alloc] initWithObjects:playerPoints, nil];
-            [playerArray addObject:player];
-        }
-        if (fetchedPlayers.count < 2) {
-            Player *player = [NSEntityDescription insertNewObjectForEntityForName:@"Player" inManagedObjectContext:self.moc];
-            player.name = @"Opponent";
-            player.totalPts = 0;
-            player.points= [[NSOrderedSet alloc] initWithObjects:opponentPoints, nil];
-            [playerArray addObject:player];
-        }
-        
-        game.player = (NSOrderedSet<Player*>*)[NSOrderedSet orderedSetWithArray:playerArray];
-        
-        if (fetchedGames.count > 0) {
-            Game *game = [fetchedGames firstObject];
-            NSOrderedSet *pointsCricket = game.pointsCricket;
-            [self.moc deleteObject:game];
-            if (pointsCricket.count >= 2) {
-                [self.moc deleteObject:[pointsCricket objectAtIndex:0]];
-                [self.moc deleteObject:[pointsCricket objectAtIndex:1]];
-            }
-        }
-        if (![self.moc save:&error]) {
-            NSAssert(NO, @"Error saving context: %@\n%@", [error localizedDescription], [error userInfo]);
-        }
     }else{
         
     }
